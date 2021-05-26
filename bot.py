@@ -1,23 +1,49 @@
-# Standard libraries
+# also work on reactionroles /selfroles
+# and maybe api work with the coding academy for possible meme api.
+# .draw file creates drawing
+# help_<command_name> cmds
+# note: IF F'NG STUPID TabError comes up, unindent and reindent all lines from command, one at a time.
+# for welcome and ai-chat stuff, see if a channel with the keyword 'welcome', or 'ai-chat' exists, if yes, then post stuff accordingly there. If no, create those channels using user input. (prob try except for this)
+
+#heres the link to add the testbot to the server for testing mod commands.
+#https://discord.com/api/oauth2/authorize?bot_id=834282409032679460&permissions=523328&scope=bot
+
+import discord
+#discord lib (async lib)
+# Note to self: when writing bot, make sure version of python is on 3.8.5+ bottom left of screen (vscode)
+from discord.ext import commands, tasks, slash
+import random
+import os
+from keep_alive import keep_alive
+from itertools import cycle
+import json
+import traceback
+import datetime
+import asyncio
+import sys
+# from flask import Flask, render_template
+# from oauth import Oauth
+import requests
+import aiosqlite
+from prsaw import RandomStuff
+import platform
+from pathlib import Path
+import motor.motor_asyncio
+import cogs.utils.json_loader
+from cogs.utils.mongo import Document
+from cogs.utils.util import clean_code, Pag
+import logging
+import io
+from flask import Flask, render_template
+import pymongo
+from pymongo import Mongobot
 import contextlib
 import io
 import os
 import logging
 from prsaw import RandomStuff
-
-# Third party libraries
 import textwrap
 from traceback import format_exception
-
-import discord
-from pathlib import Path
-import motor.motor_asyncio
-from discord.ext import commands
-
-# Local code
-import utils.json_loader
-from utils.mongo import Document
-from utils.util import clean_code, Pag
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -42,7 +68,7 @@ async def get_prefix(bot, message):
 
 intents = discord.Intents.all()  # Help command requires member intents
 DEFAULTPREFIX = "!"
-secret_file = utils.json_loader.read_json("secrets")
+secret_file = cogs.utils.json_loader.read_json("secrets")
 bot = commands.Bot(
     command_prefix=get_prefix,
     case_insensitive=True,
@@ -182,6 +208,32 @@ async def _eval(ctx, *, code):
 
     await pager.start(ctx)
 
+bot.load_extension("jishaku")
+
+async def initialize():
+	await bot.wait_until_ready()
+	bot.db = await aiosqlite.connect("expData.db")
+	await bot.db.execute("CREATE TABLE IF NOT EXISTS guildData (guild_id int, user_id int, exp int, PRIMARY KEY (guild_id, user_id))")
+
+async def general_databases():
+    await bot.wait_until_ready()
+    bot.db1 = await aiosqlite.connect("General_db.db")
+    await bot.db1.execute("CREATE TABLE IF NOT EXISTS suggestionchannel(guild_id int, suggestion_channel_id int, PRIMARY KEY (guild_id))")
+
+@tasks.loop(seconds=10)
+async def ch_pr():
+    await bot.wait_until_ready()
+    h = [1,2,3]
+    h = random.choice(h)
+    statuses=['ɢɪᴛʜᴜʙ','ᴘʏᴛʜᴏɴ 3.8│ c!help', f'in {len(bot.guilds)} servers!', 'Replit', 'Discord.py','you.','this server.','mods.','your mom.','a drug dealer.','karens','Dream','The Dream SMP','Dom (You probably Dont know him)', 'https://tinyurl.com/cafebotgoyee']
+    status=random.choice(statuses)
+    if h == 1:
+        await bot.change_presence(activity=discord.Game(name=status))
+    elif h == 2:
+        await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name=status))
+    else:
+        await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=status))
+ch_pr.start()
 
 if __name__ == "__main__":
     # When running this file, if it is the 'main' file
@@ -200,3 +252,7 @@ if __name__ == "__main__":
             bot.load_extension(f"cogs.{file[:-3]}")
 
     bot.run(bot.config_token)
+    bot.loop.create_task(initialize())
+    bot.loop.create_task(general_databases())
+    asyncio.run(bot.db.close())
+    asyncio.run(bot.db1.close())
