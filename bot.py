@@ -7,7 +7,7 @@
 
 #heres the link to add the testbot to the server for testing mod commands.
 #https://discord.com/api/oauth2/authorize?bot_id=834282409032679460&permissions=523328&scope=bot
-#ye
+#yee
 import discord
 #discord lib (async lib)
 # Note to self: when writing bot, make sure version of python is on 3.8.5+ bottom left of screen (vscode)
