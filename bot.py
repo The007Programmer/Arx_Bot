@@ -11,7 +11,7 @@
 import discord
 #discord lib (async lib)
 # Note to self: when writing bot, make sure version of python is on 3.8.5+ bottom left of screen (vscode)
-from discord.ext import commands, tasks, slash
+from discord.ext import commands, tasks
 import random
 import os
 from keep_alive import keep_alive
