@@ -3,3 +3,4 @@ __pycache__/
 #_config.yml
 poetry.lock
 pyproject.toml
+bot_config/secrets.json
