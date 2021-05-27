@@ -15,9 +15,10 @@ motor = "^2.4.0"
 parsedatetime = "^2.6"
 prsaw = "^0.3.1"
 buttons = "^0.1.9"
-dnspython3 = "^1.15.0"
 jishaku = "^1.20.0"
 expression-parser = "^0.0.5"
+dnspython = "^2.1.0"
+DiscordUtils = "^1.2.9"
 
 [tool.poetry.dev-dependencies]
 

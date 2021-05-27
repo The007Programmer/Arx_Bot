@@ -145,22 +145,33 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 
 [[package]]
 category = "main"
-description = "A DNS toolkit for Python"
-name = "dnspython"
+description = "DiscordUtils is a very useful library made to be used with discord.py"
+name = "discordutils"
 optional = false
-python-versions = "*"
-version = "1.15.0"
+python-versions = ">= 3.6"
+version = "1.2.9.2"
+
+[package.dependencies]
+youtube-dl = "*"
+
+[package.dependencies."discord.py"]
+extras = ["voice"]
+version = "*"
 
 [[package]]
 category = "main"
-description = "A DNS toolkit for Python 3.x"
-name = "dnspython3"
+description = "DNS toolkit"
+name = "dnspython"
 optional = false
-python-versions = "*"
-version = "1.15.0"
+python-versions = ">=3.6"
+version = "2.1.0"
 
-[package.dependencies]
-dnspython = "1.15.0"
+[package.extras]
+curio = ["curio (>=1.2)", "sniffio (>=1.1)"]
+dnssec = ["cryptography (>=2.6)"]
+doh = ["requests", "requests-toolbelt"]
+idna = ["idna (>=2.1)"]
+trio = ["trio (>=0.14.0)", "sniffio (>=1.1)"]
 
 [[package]]
 category = "main"
@@ -470,8 +481,16 @@ version = "1.6.3"
 idna = ">=2.0"
 multidict = ">=4.0"
 
+[[package]]
+category = "main"
+description = "YouTube video downloader"
+name = "youtube-dl"
+optional = false
+python-versions = "*"
+version = "2021.5.16"
+
 [metadata]
-content-hash = "edc2012a5e1896e100caa24a3c5da341713972bef44aae7a1aa0aed3fa25215d"
+content-hash = "a90f747525a65df7e34dda8adc8eb444ec1c51dc5fa38b92ce01cb8d00ade376"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -562,12 +581,13 @@ discord = [
     {file = "discord.py-1.7.2-py3-none-any.whl", hash = "sha256:f179db299c949a8cf0a12c1b1b94d0da9a18e088857154d93ae5ab1d807ec61d"},
     {file = "discord.py-1.7.2.tar.gz", hash = "sha256:114e76cd27362fb919abf7f001a2dbdc77c9a67cff74ed6a89aecd6582ee298e"},
 ]
-dnspython = [
-    {file = "dnspython-1.15.0-py2.py3-none-any.whl", hash = "sha256:861e6e58faa730f9845aaaa9c6c832851fbf89382ac52915a51f89c71accdd31"},
-    {file = "dnspython-1.15.0.zip", hash = "sha256:40f563e1f7a7b80dc5a4e76ad75c23da53d62f1e15e6e517293b04e1f84ead7c"},
+discordutils = [
+    {file = "DiscordUtils-1.2.9.2-py3-none-any.whl", hash = "sha256:186735da9f47299ed74f5276adfb71716e0c1fa1cdfd29ca8a792aa6c0058d63"},
+    {file = "DiscordUtils-1.2.9.2.tar.gz", hash = "sha256:83cb9906f2e623d21ad1e71df9141fb59835060f676d52bfe2be036f8233584c"},
 ]
-dnspython3 = [
-    {file = "dnspython3-1.15.0.zip", hash = "sha256:6eb9504abafb91cb67ed9dc3d3289a3ccc438533b460eccbf77e36c5323100f4"},
+dnspython = [
+    {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
+    {file = "dnspython-2.1.0.zip", hash = "sha256:e4a87f0b573201a0f3727fa18a516b055fd1107e0e5477cded4a2de497df1dd4"},
 ]
 emojis = [
     {file = "emojis-0.6.0-py3-none-any.whl", hash = "sha256:7da34c8a78ae262fd68cef9e2c78a3c1feb59784489eeea0f54ba1d4b7111c7c"},
@@ -840,4 +860,8 @@ yarl = [
     {file = "yarl-1.6.3-cp39-cp39-win32.whl", hash = "sha256:5b883e458058f8d6099e4420f0cc2567989032b5f34b271c0827de9f1079a424"},
     {file = "yarl-1.6.3-cp39-cp39-win_amd64.whl", hash = "sha256:4953fb0b4fdb7e08b2f3b3be80a00d28c5c8a2056bb066169de00e6501b986b6"},
     {file = "yarl-1.6.3.tar.gz", hash = "sha256:8a9066529240171b68893d60dca86a763eae2139dd42f42106b03cf4b426bf10"},
+]
+youtube-dl = [
+    {file = "youtube_dl-2021.5.16-py2.py3-none-any.whl", hash = "sha256:deb489a17e541ec7ac35581375ae94161eb22a7ec3373b1216181a4360c187ab"},
+    {file = "youtube_dl-2021.5.16.tar.gz", hash = "sha256:4e569cb0477428fd96ee6f7e7a6640b7c9416be626ed708ac4b8ada6c5a6ffbe"},
 ]

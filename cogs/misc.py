@@ -158,7 +158,10 @@ class Misc(commands.Cog):
     async def jskhelp(self,ctx):
         await ctx.send_help('jsk')
 
-    @commands.command(aliases=['8ball', 'eightball', 'crystalball'])  #8🅱🅰🅻🅻
+    @commands.command(
+    aliases=['8ball'], 
+    description="A virtual 8ball for all your answers!", 
+    usage="[question]")  #8🅱🅰🅻🅻
     async def _8ball(self,ctx, *, question):
         responses = [
             "It is certain.", "It is decidedly so.", "Without a doubt.",

@@ -1,13 +1,17 @@
-# also work on reactionroles /selfroles
 # and maybe api work with the coding academy for possible meme api.
 # .draw file creates drawing
-# help_<command_name> cmds
 # note: IF F'NG STUPID TabError comes up, unindent and reindent all lines from command, one at a time.
 # for welcome and ai-chat stuff, see if a channel with the keyword 'welcome', or 'ai-chat' exists, if yes, then post stuff accordingly there. If no, create those channels using user input. (prob try except for this)
 
 #heres the link to add the testbot to the server for testing mod commands.
 #https://discord.com/api/oauth2/authorize?bot_id=834282409032679460&permissions=523328&scope=bot
-#yee
+
+#reminder: Format of all decorators now --V
+#@commands.command(
+#    aliases=['whatever'], 
+#    description="Shows up on Help!", 
+#    usage="shows up in help_cmd")
+
 import discord
 #discord lib (async lib)
 # Note to self: when writing bot, make sure version of python is on 3.8.5+ bottom left of screen (vscode)
@@ -205,6 +209,8 @@ if __name__ == "__main__":
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
+
+    keep_alive()
 
     bot.run(bot.config_token)
     bot.loop.create_task(initialize())

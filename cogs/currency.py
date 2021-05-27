@@ -136,7 +136,9 @@ class Currency(commands.Cog):
         self.client = client
 
         #--V Helper Functions are user defined functions, not discord-readable commands.
-    @commands.command(aliases=['bal'])  #🅱🅰🅻🅰🅽🅲🅴
+    @commands.command(aliases=['bal'], 
+    description="Shows your balance.", 
+    usage="")  #🅱🅰🅻🅰🅽🅲🅴
     async def balance(self,ctx):  #BALANCE
     	await open_account(ctx.author)
     	user = ctx.author
@@ -147,16 +149,10 @@ class Currency(commands.Cog):
     	BalanceEmbed.add_field(name="Wallet Balance", value=wallet_amt)
     	BalanceEmbed.add_field(name="Bank Balance", value=bank_amt)
     	await ctx.send(embed=BalanceEmbed)
-    @commands.command(invoke_without_command=True, aliases=['help_bal'])
-    async def help_balance(self,ctx):
-        HBalanceEmbed = discord.Embed(title='Balance',color=(random.choice(colors)))
-        HBalanceEmbed.add_field(name="What does it do?", value='The balance command shows you the amount of money you have earned in the Cafe Bot Economy System!', inline =False)
-        HBalanceEmbed.add_field(name='Usage:', value='`<prefix>` `bal`', inline=False)
-        HBalanceEmbed.add_field(name='Aliases:', value='balance, bal, Balance, Bal', inline=False)
-        HBalanceEmbed.set_footer(text='Remember to use the prefix before each command!')
-        await ctx.send(embed = HBalanceEmbed)
 
-    @commands.command()  #🅱🅴🅶
+    @commands.command(
+    description="Imagine begging for money.", 
+    usage="")  #🅱🅴🅶
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def beg(self,ctx):  #BEG
         await open_account(ctx.author)
@@ -175,14 +171,6 @@ class Currency(commands.Cog):
 
         with open('mainbank.json', 'w') as f:
             json.dump(users, f)
-    @commands.command(invoke_without_command=True)
-    async def help_beg(self,ctx):
-        HBegEmbed = discord.Embed(title='Add',color=(random.choice(colors)))
-        HBegEmbed.add_field(name="What does it do?", value='Pretty straightforward, the add command adds 2 number inputs!', inline =False)
-        HBegEmbed.add_field(name='Usage:', value='`<prefix>` `add` `<number1>` `<number2>`', inline=False)
-        HBegEmbed.add_field(name='Aliases:', value='add, Add', inline=False)
-        HBegEmbed.set_footer(text='Remember to use the prefix before each command!')
-        await ctx.send(embed = HBegEmbed)
 
     # @commands.command() # Normal message wait_for
     # async def test(self,ctx):
@@ -193,7 +181,9 @@ class Currency(commands.Cog):
     #     else:
     #         await ctx.send("ok i wont")
 
-    @commands.command()  #🅴🅰🆁🅽
+    @commands.command(
+    description="Earning money for work!", 
+    usage="")  #🅴🅰🆁🅽
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def earn(self,ctx):
         await open_account(ctx.author)
@@ -211,7 +201,9 @@ class Currency(commands.Cog):
         with open('mainbank.json', 'w') as f:
             json.dump(users, f)
 
-    @commands.command()  #🅵🅸🆂🅷
+    @commands.command(
+    description="Have a nice day with Jack Manifold at the Lake.", 
+    usage="")  #🅵🅸🆂🅷
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def fish(self,ctx):
     	await open_account(ctx.author)
@@ -237,7 +229,9 @@ class Currency(commands.Cog):
     	with open('mainbank.json', 'w') as f:
     		json.dump(users, f)
 
-    @commands.command()  #🅷🆄🅽🆃
+    @commands.command(
+    description="Go hunting! (And hopefully don't die)", 
+    usage="")  #🅷🆄🅽🆃
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self,ctx):
     	await open_account(ctx.author)
@@ -263,7 +257,9 @@ class Currency(commands.Cog):
     	with open('mainbank.json', 'w') as f:
     		json.dump(users, f)
 
-    @commands.command(aliases=['with'])  #🆆🅸🆃🅷🅳🆁🅰🆆
+    @commands.command(aliases=['with'], 
+    description="Withdraws money from your bank!", 
+    usage="<amt_of_money>")  #🆆🅸🆃🅷🅳🆁🅰🆆
     async def withdraw(ctx, amount=None):  #WITHDRAW
         await open_account(ctx.author)
 
@@ -291,7 +287,9 @@ class Currency(commands.Cog):
         await ctx.send(f'You withdrew {amount} coins!')
 
 
-    @commands.command(aliases=['dep'])  #🅳🅴🅿🅾🆂🅸🆃
+    @commands.command(aliases=['dep'], 
+    description="Deposit's Money into your bank!", 
+    usage="<amt_of_money>")  #🅳🅴🅿🅾🆂🅸🆃
     async def deposit(self, ctx, amount=None):  #DEPOSIT
         await open_account(ctx.author)
 
@@ -316,7 +314,9 @@ class Currency(commands.Cog):
 
         await ctx.send(f'You deposited {amount} coins!')
 
-    @commands.command()  #🆂🅴🅽🅳
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🆂🅴🅽🅳
     async def send(self, ctx, member: discord.Member, amount=None):  #SEND
         await open_account(ctx.author)
         await open_account(member)
@@ -342,7 +342,9 @@ class Currency(commands.Cog):
 
         await ctx.send(f'You sent {amount} coins!')
 
-    @commands.command()  #🆁🅾🅱
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🆁🅾🅱
     async def rob(self, ctx, member: discord.Member):  #ROB
         await open_account(ctx.author)
         await open_account(member)
@@ -361,7 +363,9 @@ class Currency(commands.Cog):
 
         await ctx.send(f'You robbed {earnings} coins!')
 
-    @commands.command()  #🆂🅻🅾🆃🆂
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🆂🅻🅾🆃🆂
     async def slots(self,ctx, amount=None):  #SLOTS
         await open_account(ctx.author)
 
@@ -393,7 +397,9 @@ class Currency(commands.Cog):
             await update_bank(ctx.author, -1 * amount)
             await ctx.send('You lost slots!')
 
-    @commands.command()  #🆂🅷🅾🅿
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🆂🅷🅾🅿
     async def shop(self,ctx):
         em = discord.Embed(title="Shop")
 
@@ -405,7 +411,9 @@ class Currency(commands.Cog):
 
         await ctx.send(embed=em)
 
-    @commands.command()  #🅱🆄🆈
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🅱🆄🆈
     async def buy(self,ctx, item, amount=1):
         await open_account(ctx.author)
 
@@ -423,7 +431,9 @@ class Currency(commands.Cog):
 
         await ctx.send(f"You just bought {amount} {item}")
 
-    @commands.command()  #🅱🅰🅶
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🅱🅰🅶
     async def bag(self,ctx):
         await open_account(ctx.author)
         user = ctx.author
@@ -443,7 +453,9 @@ class Currency(commands.Cog):
 
         await ctx.send(embed=em)
 
-    @commands.command()  #🆂🅴🅻🅻
+    @commands.command(
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #🆂🅴🅻🅻
     async def sell(self, ctx, item, amount=1):
         await open_account(ctx.author)
 
@@ -462,7 +474,9 @@ class Currency(commands.Cog):
 
         await ctx.send(f"You just sold {amount} {item}.")
 
-    @commands.command(aliases=["lb"])  #leaderboard
+    @commands.command(aliases=["lb"], 
+    description="Shows up on Help!", 
+    usage="shows up in help_cmd")  #leaderboard
     async def leaderboard(self,ctx, x=3):
         users = await get_bank_data()
         leader_board = {}
