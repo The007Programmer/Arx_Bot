@@ -36,7 +36,6 @@ import logging
 import io
 from flask import Flask, render_template
 import pymongo
-# from pymongo import Mongobot
 import contextlib
 import io
 import os
@@ -44,11 +43,12 @@ import logging
 from prsaw import RandomStuff
 import textwrap
 from traceback import format_exception
+import dns
+import expression
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")
-
 
 async def get_prefix(bot, message):
     # If dm's
@@ -78,7 +78,6 @@ bot = commands.Bot(
 )  # change command_prefix='-' to command_prefix=get_prefix for custom prefixes
 bot.config_token = secret_file["token"]
 bot.connection_url = secret_file["mongo"]
-
 bot.news_api_key = secret_file["news api"]
 # bot.joke_api_key = secret_file["x-rapidapi-key"]
 bot.api_key = secret_file['api_key']
@@ -91,7 +90,7 @@ bot.muted_users = {}
 bot.cwd = cwd
 
 bot.version = "15"
-
+# bot.load_extension("jishaku")
 bot.colors = {
     "WHITE": 0xFFFFFF,
     "AQUA": 0x1ABC9C,
@@ -122,9 +121,6 @@ async def on_ready():
     print(
         f"-----\nLogged in as: {bot.user.name} : {bot.user.id}\n-----\nMy current prefix is: {bot.DEFAULTPREFIX}\n-----"
     )
-    await bot.change_presence(
-        activity=discord.Game(name="Cries in Binary | 00111010 00101000")
-    )  # This changes the bots 'activity'
 
     for document in await bot.config.get_all():
         print(document)
@@ -167,47 +163,6 @@ async def on_message(msg):
         await msg.reply(response)
     await bot.process_commands(msg)
 
-
-@bot.command(name="eval", aliases=["exec"])
-@commands.is_owner()
-async def _eval(ctx, *, code):
-    await ctx.reply("Let me evaluate this code for you! Won't be a sec")
-    code = clean_code(code)
-
-    local_variables = {
-        "discord": discord,
-        "commands": commands,
-        "bot": bot,
-        "ctx": ctx,
-        "channel": ctx.channel,
-        "author": ctx.author,
-        "guild": ctx.guild,
-        "message": ctx.message,
-    }
-
-    stdout = io.StringIO()
-
-    try:
-        with contextlib.redirect_stdout(stdout):
-            exec(
-                f"async def func():\n{textwrap.indent(code, '    ')}", local_variables,
-            )
-
-            obj = await local_variables["func"]()
-            result = f"{stdout.getvalue()}\n-- {obj}\n"
-    except Exception as e:
-        result = "".join(format_exception(e, e, e.__traceback__))
-
-    pager = Pag(
-        timeout=100,
-        entries=[result[i : i + 2000] for i in range(0, len(result), 2000)],
-        length=1,
-        prefix="```py\n",
-        suffix="```",
-    )
-
-    await pager.start(ctx)
-
 bot.load_extension("jishaku")
 
 async def initialize():
@@ -239,7 +194,7 @@ if __name__ == "__main__":
     # When running this file, if it is the 'main' file
     # I.E its not being imported from another python file run this
     bot.mongo = motor.motor_asyncio.AsyncIOMotorClient(str(bot.connection_url))
-    bot.db = bot.mongo["menudocs"]
+    bot.db = bot.mongo["Cafe_Bot"]
     bot.config = Document(bot.db, "config")
     bot.mutes = Document(bot.db, "mutes")
     bot.warns = Document(bot.db, "warns")
