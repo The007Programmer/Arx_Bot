@@ -36,7 +36,7 @@ import logging
 import io
 from flask import Flask, render_template
 import pymongo
-from pymongo import Mongobot
+# from pymongo import Mongobot
 import contextlib
 import io
 import os
