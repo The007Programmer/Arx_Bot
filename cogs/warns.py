@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
-
-from utils.util import Pag
+from cogs import utils
+from cogs.utils.util import Pag
 
 
 class Warns(commands.Cog):

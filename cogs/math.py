@@ -5,19 +5,19 @@ class Math(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['Add'])
+    @commands.command()
     async def add(self,ctx, left : int, right : int):
 	    await ctx.send(left + right)
-    @commands.command(aliases=['sub', 'Subtract', 'Sub'])
+    @commands.command(aliases=['sub'])
     async def subtract(self,ctx, left : int, right : int):
     	await ctx.send(left - right)
-    @commands.command(aliases=['mult', 'Multiply', 'Mult'])
+    @commands.command(aliases=['mult'])
     async def multiply(self,ctx, left : int, right : int):
     	await ctx.send(left*right)
-    @commands.command(aliases=['div', 'Divide', 'Div'])
+    @commands.command(aliases=['div'])
     async def divide(self,ctx, left : int, right : int):
     	await ctx.send(left/right)
-    @commands.command(aliases=['exp', 'Exponent', 'Exp']) #🅴🆇🅿🅾🅽🅴🅽🆃
+    @commands.command(aliases=['exp'])
     async def exponent(self,ctx, left : int, right : int):
     	await ctx.send(left**right)
 

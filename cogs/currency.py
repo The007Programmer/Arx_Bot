@@ -136,7 +136,7 @@ class Currency(commands.Cog):
         self.client = client
 
         #--V Helper Functions are user defined functions, not discord-readable commands.
-    @commands.command(aliases=['bal', 'Balance', 'Bal'])  #🅱🅰🅻🅰🅽🅲🅴
+    @commands.command(aliases=['bal'])  #🅱🅰🅻🅰🅽🅲🅴
     async def balance(self,ctx):  #BALANCE
     	await open_account(ctx.author)
     	user = ctx.author
@@ -147,7 +147,7 @@ class Currency(commands.Cog):
     	BalanceEmbed.add_field(name="Wallet Balance", value=wallet_amt)
     	BalanceEmbed.add_field(name="Bank Balance", value=bank_amt)
     	await ctx.send(embed=BalanceEmbed)
-    @commands.command(invoke_without_command=True, aliases=['help_bal', 'help-bal', 'Help_bal', 'Help-bal', 'help-balance', 'Help_balance', 'Help-balance'])
+    @commands.command(invoke_without_command=True, aliases=['help_bal'])
     async def help_balance(self,ctx):
         HBalanceEmbed = discord.Embed(title='Balance',color=(random.choice(colors)))
         HBalanceEmbed.add_field(name="What does it do?", value='The balance command shows you the amount of money you have earned in the Cafe Bot Economy System!', inline =False)
@@ -175,7 +175,7 @@ class Currency(commands.Cog):
 
         with open('mainbank.json', 'w') as f:
             json.dump(users, f)
-    @commands.command(invoke_without_command=True, aliases=['help-beg', 'Help_beg', 'Help-beg'])
+    @commands.command(invoke_without_command=True)
     async def help_beg(self,ctx):
         HBegEmbed = discord.Embed(title='Add',color=(random.choice(colors)))
         HBegEmbed.add_field(name="What does it do?", value='Pretty straightforward, the add command adds 2 number inputs!', inline =False)

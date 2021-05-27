@@ -1,6 +1,0 @@
-__pycache__/
-.replit
-#_config.yml
-poetry.lock
-pyproject.toml
-bot_config/secrets.json

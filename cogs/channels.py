@@ -2,7 +2,7 @@ import random
 
 import discord
 from discord.ext import commands
-
+import platform
 
 class Channels(commands.Cog):
     def __init__(self, bot):
@@ -19,44 +19,66 @@ class Channels(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(
-        name="channelstats",
-        aliases=["cs"],
-        description="Sends a nice fancy embed with some channel stats",
-    )
-    @commands.bot_has_guild_permissions(manage_channels=True)
-    async def channelstats(self, ctx):
-        channel = ctx.channel
+    # @commands.command(
+    #     name="channelstats",
+    #     aliases=["cs"],
+    #     description="Sends a nice fancy embed with some channel stats",
+    # )
+    # @commands.bot_has_guild_permissions(manage_channels=True)
+    # async def channelstats(self, ctx):
+    #     channel = ctx.channel
 
-        embed = discord.Embed(
-            title=f"Stats for **{channel.name}**",
-            description=f"{'Category: {}'.format(channel.category.name) if channel.category else 'This channel is not in a category'}",
-            color=random.choice(self.bot.color_list),
-        )
-        embed.add_field(name="Channel Guild", value=ctx.guild.name, inline=False)
-        embed.add_field(name="Channel Id", value=channel.id, inline=False)
-        embed.add_field(
-            name="Channel Topic",
-            value=f"{channel.topic if channel.topic else 'No topic.'}",
-            inline=False,
-        )
-        embed.add_field(name="Channel Position", value=channel.position, inline=False)
-        embed.add_field(
-            name="Channel Slowmode Delay", value=channel.slowmode_delay, inline=False
-        )
-        embed.add_field(name="Channel is nsfw?", value=channel.is_nsfw(), inline=False)
-        embed.add_field(name="Channel is news?", value=channel.is_news(), inline=False)
-        embed.add_field(
-            name="Channel Creation Time", value=channel.created_at, inline=False
-        )
-        embed.add_field(
-            name="Channel Permissions Synced",
-            value=channel.permissions_synced,
-            inline=False,
-        )
-        embed.add_field(name="Channel Hash", value=hash(channel), inline=False)
+    #     embed = discord.Embed(
+    #         title=f"Stats for **{channel.name}**",
+    #         description=f"{'Category: {}'.format(channel.category.name) if channel.category else 'This channel is not in a category'}",
+    #         color=random.choice(self.bot.color_list),
+    #     )
+    #     embed.add_field(name="Channel Guild", value=ctx.guild.name, inline=False)
+    #     embed.add_field(name="Channel Id", value=channel.id, inline=False)
+    #     embed.add_field(
+    #         name="Channel Topic",
+    #         value=f"{channel.topic if channel.topic else 'No topic.'}",
+    #         inline=False,
+    #     )
+    #     embed.add_field(name="Channel Position", value=channel.position, inline=False)
+    #     embed.add_field(
+    #         name="Channel Slowmode Delay", value=channel.slowmode_delay, inline=False
+    #     )
+    #     embed.add_field(name="Channel is nsfw?", value=channel.is_nsfw(), inline=False)
+    #     embed.add_field(name="Channel is news?", value=channel.is_news(), inline=False)
+    #     embed.add_field(
+    #         name="Channel Creation Time", value=channel.created_at, inline=False
+    #     )
+    #     embed.add_field(
+    #         name="Channel Permissions Synced",
+    #         value=channel.permissions_synced,
+    #         inline=False,
+    #     )
+    #     embed.add_field(name="Channel Hash", value=hash(channel), inline=False)
 
-        await ctx.send(embed=embed)
+    #     await ctx.send(embed=embed)
+
+    # @commands.command()
+    # async def stats(self, ctx):
+    #     pythonVersion = platform.python_version()
+    #     dpyVersion = discord.__version__
+    #     serverCount = len(self.client.guilds)
+    #     memberCount = len(set(self.client.get_all_members()))
+    #     version=1.2
+    #     embed = discord.Embed(
+    #         title=f"{self.client.user.name} Stats",
+    #         description="\uFEFF",
+    #         colour=ctx.author.colour,
+    #         timestamp=ctx.message.created_at,)
+    #     embed.add_field(name='Bot Verison', value=f'{version}')
+    #     embed.add_field(name="Python Version:", value=pythonVersion)
+    #     embed.add_field(name="Discord.Py Version", value=dpyVersion)
+    #     embed.add_field(name="Total Guilds:", value=serverCount)
+    #     embed.add_field(name="Total Users:", value=memberCount)
+    #     embed.add_field(name="Bot Developers:", value="<@759919832539332639> and <@724275771278884906>")
+    #     embed.set_footer(text=f"Carpe Noctem | {self.client.user.name}")
+    #     embed.set_author(name=self.client.user.name, icon_url=self.client.user.avatar_url)
+    #     await ctx.send(embed=embed)
 
     @commands.group(invoke_without_command=True)
     @our_custom_check()

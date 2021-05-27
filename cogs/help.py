@@ -1,7 +1,7 @@
 # Requires pip install buttons
 from discord.ext import commands
 
-from utils.util import Pag
+from cogs.utils.util import Pag
 
 class Help(commands.Cog, name="Help command"):
     def __init__(self, bot):
