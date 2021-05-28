@@ -211,8 +211,8 @@ if __name__ == "__main__":
 
     keep_alive()
 
-    bot.run(bot.config_token)
     bot.loop.create_task(initialize())
     bot.loop.create_task(general_databases())
+    bot.run(bot.config_token)
     asyncio.run(bot.db.close())
     asyncio.run(bot.db1.close())
