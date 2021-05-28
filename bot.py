@@ -92,7 +92,7 @@ bot.blacklisted_users = []
 bot.muted_users = {}
 bot.cwd = cwd
 
-bot.version = "15"
+bot.version = "v.1.4"
 # bot.load_extension("jishaku")
 bot.colors = {
     "WHITE": 0xFFFFFF,

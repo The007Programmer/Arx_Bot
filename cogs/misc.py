@@ -158,6 +158,30 @@ class Misc(commands.Cog):
     async def jskhelp(self,ctx):
         await ctx.send_help('jsk')
 
+    @commands.command()
+    async def afk(self, ctx, mins):
+        current_nick = ctx.author.nick
+        await ctx.send(f"{ctx.author.mention} has gone afk for {mins} minutes.")
+        await ctx.author.edit(nick=f"[AFK] {ctx.author} ")
+
+        counter = 0
+        while counter <= int(mins):
+            counter += 1
+            await asyncio.sleep(60)
+
+            if counter == int(mins):
+                await ctx.author.edit(nick=current_nick)
+                await ctx.send(f"{ctx.author.mention} is no longer AFK")
+                break
+
+    # @commands.Cog.listener()
+    # async def on_message(self,ctx):
+    #     if len(ctx.author.nick) >0:
+    #         if "[AFK]" in ctx.author.nick:
+    #             current_nick = ctx.author.nick
+    #             await ctx.author.edit(nick=f"[AFK] {ctx.author} ")
+    #             await ctx.send(f"{ctx.author.mention} is no longer AFK")
+
     @commands.command(
     aliases=['8ball'], 
     description="A virtual 8ball for all your answers!", 
