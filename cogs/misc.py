@@ -101,13 +101,13 @@ class Misc(commands.Cog):
 
     @commands.command(aliases=['sug'])
     async def suggest(self, ctx, *, msg):
-        cursor = await self.client.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
+        cursor = await self.bot.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()
         if data is None:
             pass
         else:
             c = data[0]
-            channel = self.client.get_channel(c)
+            channel = self.bot.get_channel(c)
             SuggestEmbed=discord.Embed(title=f"Suggestion by {ctx.author.display_name}", description=msg, color=discord.Color.random(), timestamp=ctx.message.created_at)
             message = await channel.send(embed=SuggestEmbed)
             await message.add_reaction("🔼")
@@ -116,7 +116,7 @@ class Misc(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def see(self,ctx):
-        for g in self.client.guilds:
+        for g in self.bot.guilds:
             personembed=discord.Embed()
             personembed.add_field(name=f"Server Owner: {g.owner} + Server name:{g.name} + Server ID: {g.id}",value="⠀",inline=False)
             await ctx.send(embed=personembed)
@@ -124,14 +124,14 @@ class Misc(commands.Cog):
     @commands.command(aliases=['ssc'])
     @commands.has_permissions(administrator=True)
     async def setsuggestionchannel(self, ctx, channel:discord.TextChannel):
-        cursor = await self.client.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
+        cursor = await self.bot.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()
         if data is None:
-            cursor = await self.client.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+            cursor = await self.bot.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
             if cursor.rowcount == 0:
-                await self.client.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                await self.bot.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
             await ctx.send(f"Successfully set the suggestion channel to {channel.mention}")
-            await self.client.db1.commit()
+            await self.bot.db1.commit()
         else:
             c = data[0]
             if channel.id == c:
@@ -140,18 +140,18 @@ class Misc(commands.Cog):
             await msg.add_reaction('❌')
             await msg.add_reaction('✅')
             try:
-                reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=lambda r,u : u == ctx.author and r.message == msg and str(r) in "✅❌")
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=lambda r,u : u == ctx.author and r.message == msg and str(r) in "✅❌")
             except asyncio.TimeoutError:
                 return await ctx.send(f"You Took too long to respond")
             if str(reaction) == "❌":
                 return await ctx.send(f"The suggestion channel stays as <#{c}> then")
             else:
-                await self.client.db1.execute(f"DELETE FROM suggestionchannel WHERE guild_id = {ctx.guild.id}")
-                cursor = await self.client.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                await self.bot.db1.execute(f"DELETE FROM suggestionchannel WHERE guild_id = {ctx.guild.id}")
+                cursor = await self.bot.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
                 if cursor.rowcount == 0:
-                    await self.client.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                    await self.bot.db1.execute("INSERT OR IGNORE INTO suggestionchannel (guild_id, suggestion_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
                 await ctx.send(f"Successfully set the suggestion channel to {channel.mention}")
-                await self.client.db1.commit()
+                await self.bot.db1.commit()
 
     @commands.command()
     @commands.is_owner()
@@ -206,11 +206,11 @@ class Misc(commands.Cog):
 
     @commands.command()  #🅿🅸🅽🅶
     async def ping(self,ctx):
-        await ctx.send(f'Pong! {round(self.client.latency * 1000)}ms')
+        await ctx.send(f'Pong! {round(self.bot.latency * 1000)}ms')
 
     @commands.command()
     async def invite(self,ctx):
-    	InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/oauth2/authorize?  client_id=832409595791409242&permissions=8&scope=bot",color=(random.choice(colors)))
+    	InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/oauth2/authorize?  bot_id=832409595791409242&permissions=8&scope=bot",color=(random.choice(colors)))
     	InviteEmbed.add_field(name="What does it do?",value='Here is a link to invite Cafe Bot to your  server!', inline = False)
     	InviteEmbed.set_footer(text='Remember to use the prefix before each command!')
     	await ctx.send(embed=InviteEmbed)
