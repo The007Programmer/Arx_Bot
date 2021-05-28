@@ -48,6 +48,8 @@ Then, you need an API Key from [PGamerX](https://api-info.pgamerx.com/register.h
 
 Now, after these steps, this step can go 3 ways from here.
 
+[The 3 ways... (__VERY__ IMPORTANT)](SECRETS.md)
+
 * And that should be it for prerequisites and installations.
 
 ## Current Build Status
