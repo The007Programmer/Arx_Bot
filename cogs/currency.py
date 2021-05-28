@@ -315,8 +315,8 @@ class Currency(commands.Cog):
         await ctx.send(f'You deposited {amount} coins!')
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🆂🅴🅽🅳
+    description="Sends money to another person. Perfect for giveaways!", 
+    usage="<@username> <amt_of_money>")  #🆂🅴🅽🅳
     async def send(self, ctx, member: discord.Member, amount=None):  #SEND
         await open_account(ctx.author)
         await open_account(member)
@@ -343,8 +343,8 @@ class Currency(commands.Cog):
         await ctx.send(f'You sent {amount} coins!')
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🆁🅾🅱
+    description="Robs from a given user.", 
+    usage="<@username>")  #🆁🅾🅱
     async def rob(self, ctx, member: discord.Member):  #ROB
         await open_account(ctx.author)
         await open_account(member)
@@ -364,8 +364,8 @@ class Currency(commands.Cog):
         await ctx.send(f'You robbed {earnings} coins!')
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🆂🅻🅾🆃🆂
+    description="Gambling in Las Vegas!", 
+    usage="<amt_of_money_gambling>")  #🆂🅻🅾🆃🆂
     async def slots(self,ctx, amount=None):  #SLOTS
         await open_account(ctx.author)
 
@@ -398,8 +398,8 @@ class Currency(commands.Cog):
             await ctx.send('You lost slots!')
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🆂🅷🅾🅿
+    description="Stuff you can buy with your collected money!", 
+    usage="")  #🆂🅷🅾🅿
     async def shop(self,ctx):
         em = discord.Embed(title="Shop")
 
@@ -412,8 +412,8 @@ class Currency(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🅱🆄🆈
+    description="Buys something from the shop!", 
+    usage="[item_name]")  #🅱🆄🆈
     async def buy(self,ctx, item, amount=1):
         await open_account(ctx.author)
 
@@ -432,8 +432,8 @@ class Currency(commands.Cog):
         await ctx.send(f"You just bought {amount} {item}")
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🅱🅰🅶
+    description="Inventory!", 
+    usage="")  #🅱🅰🅶
     async def bag(self,ctx):
         await open_account(ctx.author)
         user = ctx.author
@@ -454,8 +454,8 @@ class Currency(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #🆂🅴🅻🅻
+    description="Sells an item from your inventory!", 
+    usage="[item_name]")  #🆂🅴🅻🅻
     async def sell(self, ctx, item, amount=1):
         await open_account(ctx.author)
 
@@ -475,8 +475,8 @@ class Currency(commands.Cog):
         await ctx.send(f"You just sold {amount} {item}.")
 
     @commands.command(aliases=["lb"], 
-    description="Shows up on Help!", 
-    usage="shows up in help_cmd")  #leaderboard
+    description="Leaderboard of Richest People in the Server!", 
+    usage="[number_of people displayed]")  #leaderboard
     async def leaderboard(self,ctx, x=3):
         users = await get_bank_data()
         leader_board = {}
