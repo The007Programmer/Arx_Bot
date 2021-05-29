@@ -4,7 +4,7 @@
 # for welcome and ai-chat stuff, see if a channel with the keyword 'welcome', or 'ai-chat' exists, if yes, then post stuff accordingly there. If no, create those channels using user input. (prob try except for this)
 
 #heres the link to add the testbot to the server for testing mod commands.
-#https://discord.com/api/oauth2/authorize?bot_id=834282409032679460&permissions=523328&scope=bot
+#https://discord.com/oauth2/authorize?client_id=834282409032679460&permissions=515136&scope=bot
 
 #reminder: Format of all decorators now --V
 #@commands.command(
@@ -71,7 +71,7 @@ async def get_prefix(bot, message):
 
 
 intents = discord.Intents.all()  # Help command requires member intents
-DEFAULTPREFIX = "!"
+DEFAULTPREFIX = "c!"
 bot = commands.Bot(
     command_prefix=get_prefix,
     case_insensitive=True,

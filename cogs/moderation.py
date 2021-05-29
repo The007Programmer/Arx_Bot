@@ -199,13 +199,13 @@ class Moderation(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(
-        name="purge",
-        description="A command which purges the channel it is called in",
+        name="clear",
+        description="A command which clears messages the channel it is called in",
         usage="[amount]",
     )
     @commands.guild_only()
     @commands.is_owner()
-    async def purge(self, ctx, amount=15):
+    async def clear(self, ctx, amount=15):
         await ctx.channel.purge(limit=amount + 1)
         embed = discord.Embed(
             title=f"{ctx.author.name} purged: {ctx.channel.name}",

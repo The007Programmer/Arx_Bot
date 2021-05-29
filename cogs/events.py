@@ -40,10 +40,10 @@ class Events(commands.Cog):
     async def on_member_join(self, member):
         # On member joins we find a channel called general and if it exists,
         # send an embed welcoming them to our guild
-        channel = discord.utils.get(member.guild.text_channels, name="recording")
+        channel = discord.utils.get(member.guild.text_channels, name="👋│welcome")
         if channel:
             embed = discord.Embed(
-                description="Welcome to our guild!",
+                description=f"Welcome to {member.guild.name}!",
                 color=random.choice(self.bot.color_list),
             )
             embed.set_thumbnail(url=member.avatar_url)
@@ -52,12 +52,26 @@ class Events(commands.Cog):
             embed.timestamp = datetime.datetime.utcnow()
 
             await channel.send(embed=embed)
+        else:
+            channel = discord.utils.get(member.guild.text_channels, name="welcome")
+            if channel:
+                embed = discord.Embed(
+                    description=f"Welcome to {member.guild.name}!",
+                    color=random.choice(self.bot.color_list),
+                )
+                embed.set_thumbnail(url=member.avatar_url)
+                embed.set_author(name=member.name, icon_url=member.avatar_url)
+                embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
+                embed.timestamp = datetime.datetime.utcnow()
+
+                await channel.send(embed=embed)
+        
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         # On member remove we find a channel called general and if it exists,
         # send an embed saying goodbye from our guild-
-        channel = discord.utils.get(member.guild.text_channels, name="recording")
+        channel = discord.utils.get(member.guild.text_channels, name="🛫│ppl-that-left")
         if channel:
             embed = discord.Embed(
                 description="Goodbye from all of us..",
