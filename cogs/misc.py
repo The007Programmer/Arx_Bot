@@ -178,6 +178,10 @@ class Misc(commands.Cog):
     #             await ctx.author.edit(nick=f"[AFK] {ctx.author} ")
     #             await ctx.send(f"{ctx.author.mention} is no longer AFK")
 
+    @commands.command(aliases=['wel'])
+    async def welcome(self,ctx):
+        await ctx.send("<a:welcome2:848026093251330059>"+"<a:welcome1:848026092509593621>"+"<a:spamhi:848026096733388800>")
+
     @commands.command(
     aliases=['8ball'], 
     description="A virtual 8ball for all your answers!", 
