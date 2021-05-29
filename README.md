@@ -33,8 +33,7 @@ Python 3.6+
 
 A working Text Editor or IDE.
 
-[The Pip Installs](PIP_INSTALLS.md)
-
+and then merely `pip install -U -r requirements.txt`.
 ## Usage
 
 Many of you that have come across this page, probably want to use this code for yourself. ⚡ NEWS FLASH ⚡, many people that just take things from a person's github and use it for themselves and they DON'T GIVE CREDIT! If you want to us it properly, then you have to give credit to this github page, and all the contributors.
