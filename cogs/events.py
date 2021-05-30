@@ -111,7 +111,7 @@ class Events(commands.Cog):
             if c is None:
                 return
             if c.guild.id == member.guild.id:
-                MemberJoinEmbed=discord.Embed(title="A New Member Joined!",description=f"Welcome to {member.guild.name}!", color=random.choice(self.bot.color_list))
+                MemberJoinEmbed=discord.Embed(title=f"Welcome {member.name}!",description=f"A New Member Joined! Welcome to {member.guild.name}!", color=random.choice(self.bot.color_list))
                 MemberJoinEmbed.set_thumbnail(url=member.avatar_url)
 
                 MemberJoinEmbed.set_author(name=member.name, icon_url=member.avatar_url)
@@ -134,8 +134,8 @@ class Events(commands.Cog):
             if c is None:
                 return
             if c.guild.id == member.guild.id:
-                MemberLeaveEmbed = discord.Embed(title="Someone Left...",description="Goodbye from all of us..", color=random.choice(self.bot.color_list))
-)
+                MemberLeaveEmbed = discord.Embed(title=f"Bye {member.name}...",description="Goodbye from all of us..", color=random.choice(self.bot.color_list))
+
                 MemberLeaveEmbed.set_thumbnail(url=member.avatar_url)
 
                 MemberLeaveEmbed.set_author(name=member.name, icon_url=member.avatar_url)
