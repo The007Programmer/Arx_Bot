@@ -112,15 +112,16 @@ class Events(commands.Cog):
                 return
             if c.guild.id == member.guild.id:
                 MemberJoinEmbed=discord.Embed(title="A New Member Joined!",description=f"Welcome to {member.guild.name}!", color=random.choice(self.bot.color_list))
-                MemberJoinEmbedset_thumbnail(url=member.avatar_url)
+                MemberJoinEmbed.set_thumbnail(url=member.avatar_url)
 
-                MemberJoinEmbedset_author(name=member.name, icon_url=member.avatar_url)
+                MemberJoinEmbed.set_author(name=member.name, icon_url=member.avatar_url)
 
-                MemberJoinEmbedset_footer(text=member.guild, icon_url=member.guild.icon_url)
+                MemberJoinEmbed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
 
-                MemberJoinEmbedtimestamp = datetime.datetime.utcnow()
+                MemberJoinEmbed.timestamp = datetime.datetime.utcnow()
 
-                wait  csend(embed=eMemberJoinEmbed)
+                await c.send(embed=MemberJoinEmbed)
+
     @commands.Cog.listener()
     async def on_member_remove(self, member):
 
@@ -133,19 +134,18 @@ class Events(commands.Cog):
             if c is None:
                 return
             if c.guild.id == member.guild.id:
-                MemberLeaveEmbed discord.Embed(
-(title="Someone Left...",escription="Goodbye from all of us..",
-, lor=random.choice(self.bot.color_list),
+                MemberLeaveEmbed = discord.Embed(title="Someone Left...",description="Goodbye from all of us..", color=random.choice(self.bot.color_list))
 )
-                MemberLeaveEmbedet_thumbnail(url=member.avatar_url)
+                MemberLeaveEmbed.set_thumbnail(url=member.avatar_url)
 
-                MemberLeaveEmbedet_author(name=member.name, icon_url=member.avatar_url)
+                MemberLeaveEmbed.set_author(name=member.name, icon_url=member.avatar_url)
 
-                MemberLeaveEmbedet_footer(text=member.guild, icon_url=member.guild.icon_url)
+                MemberLeaveEmbed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
 
-                MemberLeaveEmbedimestamp = datetime.datetime.utcnow()
-)
-                ait t cend(embed=emMemberLeaveEmbed 
+                MemberLeaveEmbed.timestamp = datetime.datetime.utcnow()
+
+                await c.send(embed=emMemberLeaveEmbed)
+
     @commands.Cog.listener()
     async def on_guild_join(self,guild:discord.Guild):
         welcome_channel = discord.utils.get(guild.channels, name="welcome")
