@@ -154,11 +154,6 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self,guild:discord.Guild):
         welcome_channel = discord.utils.get(guild.channels, name="welcome")
-        # with open("prefixes.json", "r") as f:
-        #     prefixes = json.load(f)
-        # prefixes[str(msg.id)] = "c!"
-        # with open("prefixes.json", "w") as f:
-        #     json.dump(prefixes,f)
         if welcome_channel in guild.channel.name:
             await welcome_channel.send('Hey there! Thanks for adding me {0.user}'.format(self.client) +' into your server!')
             ServerJoinEmbed = discord.Embed(title='Stuff to do:',color=discord.Color.random())
