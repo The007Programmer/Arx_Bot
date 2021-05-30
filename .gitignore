@@ -3,3 +3,5 @@ cogs/__pycache__/
 General_db.db
 expData.db
 *.replit
+poetry.lock
+pyproject.toml
