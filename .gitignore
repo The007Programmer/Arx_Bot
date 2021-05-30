@@ -5,3 +5,4 @@ expData.db
 *.replit
 poetry.lock
 pyproject.toml
+mainbank1.json
