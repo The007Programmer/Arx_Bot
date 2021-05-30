@@ -20,6 +20,10 @@ This is an all-around Discord Bot, with many features, such as:
 * Eval & Stat Commands²
 * A Leveling System³
 * Reaction-Roles²
+* Admin-Only Commands³
+* A Calculator System³
+* A Suggestion System with Upvotes and Downvotes³
+* A setchannel command where you can set certain channels in your server!³
 * and much more!
 
 [Invite The Bot to Your Server!](https://discord.com/oauth2/authorize?client_id=832409595791409242&permissions=8&scope=bot)
@@ -35,6 +39,7 @@ Python 3.6+
 A working Text Editor or IDE.
 
 and then merely `pip install -U -r requirements.txt`.
+
 ## Usage
 
 Many of you that have come across this page, probably want to use this code for yourself. ⚡ NEWS FLASH ⚡, many people that just take things from a person's github and use it for themselves and they DON'T GIVE CREDIT! If you want to us it properly, then you have to give credit to this github page, and all the contributors.
@@ -53,7 +58,7 @@ Now, after these steps, this step can go 3 ways from here.
 * And that should be it for prerequisites and installations.
 
 ## Current Build Status
-- @MilkshakeTheCoder - (Possible Dashboard???)
+- @MilkshakeTheCoder - (Possible ModLog???, Cleanup)
 - @Andrewthederp - (Currency System Upgrades, Overall better feel.)
 
 ## Main Technologies Used

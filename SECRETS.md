@@ -17,7 +17,7 @@
 ![vscode2](https://user-images.githubusercontent.com/83626443/118033835-1ead5980-b31e-11eb-829d-b1f14be94982.gif)
 
 ### In Between:
-1. Create a file called `secrets.json` in `bot_config`. (This file will not come pre-downloadable, because it is a custom file.)
+1. Create a file called `secrets.json` in `bot_config`. (NOTE: This file should not be gitignored, so you should not post this version to github if you use this method.)
 2. You will need to put your secrets like this. **Pro Tip** (Try to keep the variable name the same, because otherwise it'll be a bunch of unwanted hassle.)
     - Find out how to get a MongoDB Connection str [here](https://docs.mongodb.com/manual/reference/connection-string/) or [here](https://www.youtube.com/watch?v=R2VReXO_1j0). For the second link, watch from 00:28-2:09 and 7:50-8:02. 
 
