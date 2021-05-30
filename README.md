@@ -55,6 +55,8 @@ Now, after these steps, this step can go 3 ways from here.
 
 [The 3 ways... (__VERY__ IMPORTANT)](SECRETS.md)
 
+After that, there will be some [small things] to replace in the code, to make sure it still works.
+
 * And that should be it for prerequisites and installations.
 
 ## Current Build Status
