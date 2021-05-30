@@ -49,7 +49,10 @@ class afk(commands.Cog):
             dumps = open("afk.json", "w")
             json.dump(afk, dumps, indent = 4)
             await ctx.send("{}, I have set your AFK with reason : {}".format(ctx.author.mention, message))  
-            await ctx.author.edit(nick = f"[AFK] {ctx.author.name}")
+            try:
+                await ctx.author.edit(nick = f"[AFK] {ctx.author.name}")
+            except discord.Forbidden:
+                pass
         else:
             return
 

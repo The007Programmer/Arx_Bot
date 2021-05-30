@@ -177,6 +177,8 @@ async def general_databases():
     await bot.wait_until_ready()
     bot.db1 = await aiosqlite.connect("General_db.db")
     await bot.db1.execute("CREATE TABLE IF NOT EXISTS suggestionchannel(guild_id int, suggestion_channel_id int, PRIMARY KEY (guild_id))")
+    await bot.db1.execute("CREATE TABLE IF NOT EXISTS welcomechannel(guild_id int, welcome_channel_id int, PRIMARY KEY (guild_id))")
+    await bot.db1.execute("CREATE TABLE IF NOT EXISTS leavechannel(guild_id int, leave_channel_id int, PRIMARY KEY (guild_id))")
 
 @tasks.loop(seconds=10)
 async def ch_pr():

@@ -36,54 +36,116 @@ class Events(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
+    @commands.command(aliases=['swc'])
+    async def setwelcomechannel(self, ctx, channel:discord.TextChannel):
+        cursor = await self.bot.db1.execute(f"SELECT welcome_channel_id from welcomechannel WHERE guild_id = {ctx.guild.id}")
+        data = await cursor.fetchone()
+        if data is None:
+            cursor = await self.bot.db1.execute("INSERT OR IGNORE INTO welcomechannel (guild_id, welcome_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+            if cursor.rowcount == 0:
+                await self.bot.db1.execute("INSERT OR IGNORE INTO welcomechannel (guild_id, welcome_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+            await ctx.send(f"Successfully set the welcome channel to {channel.mention}")
+            await self.bot.db1.commit()
+        else:
+            c = data[0]
+            if channel.id == c:
+                return await ctx.send("That channel is already set as the welcome channel")
+            msg = await ctx.send(f"<#{c}> Is already set as the welcome channel, are you sure you want to change that?")
+            await msg.add_reaction('❌')
+            await msg.add_reaction('✅')
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=lambda r,u : u == ctx.author and r.message == msg and str(r) in "✅❌")
+            except asyncio.TimeoutError:
+                return await ctx.send(f"You Took too long to respond")
+            if str(reaction) == "❌":
+                return await ctx.send(f"The welcome channel stays as <#{c}> then")
+            else:
+                await self.bot.db1.execute(f"DELETE FROM welcomechannel WHERE guild_id = {ctx.guild.id}")
+                cursor = await self.bot.db1.execute("INSERT OR IGNORE INTO welcomechannel (guild_id, welcome_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                if cursor.rowcount == 0:
+                    await self.bot.db1.execute("INSERT OR IGNORE INTO welcomechannel (guild_id, welcome_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                await ctx.send(f"Successfully set the welcome channel to {channel.mention}")
+                await self.bot.db1.commit()
+
+    @commands.command(aliases=['slc'])
+    async def setleavechannel(self, ctx, channel:discord.TextChannel):
+        cursor = await self.bot.db1.execute(f"SELECT leave_channel_id from leavechannel WHERE guild_id = {ctx.guild.id}")
+        data = await cursor.fetchone()
+        if data is None:
+            cursor = await self.bot.db1.execute("INSERT OR IGNORE INTO leavechannel (guild_id, leave_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+            if cursor.rowcount == 0:
+                await self.bot.db1.execute("INSERT OR IGNORE INTO leavechannel (guild_id, leave_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+            await ctx.send(f"Successfully set the leave channel to {channel.mention}")
+            await self.bot.db1.commit()
+        else:
+            c = data[0]
+            if channel.id == c:
+                return await ctx.send("That channel is already set as the leave channel")
+            msg = await ctx.send(f"<#{c}> Is already set as the leave channel, are you sure you want to change that?")
+            await msg.add_reaction('❌')
+            await msg.add_reaction('✅')
+            try:
+                reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=lambda r,u : u == ctx.author and r.message == msg and str(r) in "✅❌")
+            except asyncio.TimeoutError:
+                return await ctx.send(f"You Took too long to respond")
+            if str(reaction) == "❌":
+                return await ctx.send(f"The leave channel stays as <#{c}> then")
+            else:
+                await self.bot.db1.execute(f"DELETE FROM leavechannel WHERE guild_id = {ctx.guild.id}")
+                cursor = await self.bot.db1.execute("INSERT OR IGNORE INTO leavechannel (guild_id, leave_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                if cursor.rowcount == 0:
+                    await self.bot.db1.execute("INSERT OR IGNORE INTO leavechannel (guild_id, leave_channel_id) VALUES (?,?)",(ctx.guild.id, channel.id))
+                await ctx.send(f"Successfully set the leave channel to {channel.mention}")
+                await self.bot.db1.commit()
+
     @commands.Cog.listener()
     async def on_member_join(self, member):
         # On member joins we find a channel called general and if it exists,
         # send an embed welcoming them to our guild
-        channel = discord.utils.get(member.guild.text_channels, name="👋│welcome")
-        if channel:
-            embed = discord.Embed(
-                description=f"Welcome to {member.guild.name}!",
-                color=random.choice(self.bot.color_list),
-            )
-            embed.set_thumbnail(url=member.avatar_url)
-            embed.set_author(name=member.name, icon_url=member.avatar_url)
-            embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
-            embed.timestamp = datetime.datetime.utcnow()
-
-            await channel.send(embed=embed)
+        cursor = await self.bot.db1.execute(f"SELECT welcome_channel_id from welcomechannel WHERE guild_id = {member.guild.id}")
+        data = await cursor.fetchone()
+        if data is None:
+            return
         else:
-            channel = discord.utils.get(member.guild.text_channels, name="welcome")
-            if channel:
-                embed = discord.Embed(
-                    description=f"Welcome to {member.guild.name}!",
-                    color=random.choice(self.bot.color_list),
-                )
-                embed.set_thumbnail(url=member.avatar_url)
-                embed.set_author(name=member.name, icon_url=member.avatar_url)
-                embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
-                embed.timestamp = datetime.datetime.utcnow()
+            c = self.bot.get_channel(data[0])
+            if c is None:
+                return
+            if c.guild.id == member.guild.id:
+                MemberJoinEmbed=discord.Embed(title="A New Member Joined!",description=f"Welcome to {member.guild.name}!", color=random.choice(self.bot.color_list))
+                MemberJoinEmbedset_thumbnail(url=member.avatar_url)
 
-                await channel.send(embed=embed)
-        
+                MemberJoinEmbedset_author(name=member.name, icon_url=member.avatar_url)
 
+                MemberJoinEmbedset_footer(text=member.guild, icon_url=member.guild.icon_url)
+
+                MemberJoinEmbedtimestamp = datetime.datetime.utcnow()
+
+                wait  csend(embed=eMemberJoinEmbed)
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        # On member remove we find a channel called general and if it exists,
-        # send an embed saying goodbye from our guild-
-        channel = discord.utils.get(member.guild.text_channels, name="🛫│ppl-that-left")
-        if channel:
-            embed = discord.Embed(
-                description="Goodbye from all of us..",
-                color=random.choice(self.bot.color_list),
-            )
-            embed.set_thumbnail(url=member.avatar_url)
-            embed.set_author(name=member.name, icon_url=member.avatar_url)
-            embed.set_footer(text=member.guild, icon_url=member.guild.icon_url)
-            embed.timestamp = datetime.datetime.utcnow()
 
-            await channel.send(embed=embed)
- 
+        cursor = await self.bot.db1.execute(f"SELECT leave_channel_id from leavechannel WHERE guild_id = {member.guild.id}")
+        data = await cursor.fetchone()
+        if data is None:
+            return
+        else:
+            c = self.bot.get_channel(data[0])
+            if c is None:
+                return
+            if c.guild.id == member.guild.id:
+                MemberLeaveEmbed discord.Embed(
+(title="Someone Left...",escription="Goodbye from all of us..",
+, lor=random.choice(self.bot.color_list),
+)
+                MemberLeaveEmbedet_thumbnail(url=member.avatar_url)
+
+                MemberLeaveEmbedet_author(name=member.name, icon_url=member.avatar_url)
+
+                MemberLeaveEmbedet_footer(text=member.guild, icon_url=member.guild.icon_url)
+
+                MemberLeaveEmbedimestamp = datetime.datetime.utcnow()
+)
+                ait t cend(embed=emMemberLeaveEmbed 
     @commands.Cog.listener()
     async def on_guild_join(self,guild:discord.Guild):
         welcome_channel = discord.utils.get(guild.channels, name="welcome")
@@ -94,7 +156,7 @@ class Events(commands.Cog):
         #     json.dump(prefixes,f)
         if welcome_channel in guild.channel.name:
             await welcome_channel.send('Hey there! Thanks for adding me {0.user}'.format(self.client) +' into your server!')
-            ServerJoinEmbed = discord.Embed(title='Stuff to do:',color=(random.choice(colors)))
+            ServerJoinEmbed = discord.Embed(title='Stuff to do:',color=discord.Color.random())
             ServerJoinEmbed.add_field(name="Help", value="Go ahead and write ` c!help` into your chat, and find out the many    commands we have as part of this bot! If you don't know what a certain command does, then try  `c!help_<command_name>` to find out more information about a command.", inline =False)
             ServerJoinEmbed.add_field(name='Important:', value='If you have admin permissions, or are the  current owner of the  server, be sure to `c!info` about important things to know about this bot, including how it works, and   troubleshooting.', inline=False)
             ServerJoinEmbed.set_footer(text='Remember to use the prefix before each command!')
@@ -102,7 +164,7 @@ class Events(commands.Cog):
         else:
             guild.create_text_channel(welcome_channel)
             await welcome_channel.send('Hey there! Thanks for adding me {0.user}'.format(self.client) +' into your server!')
-            ServerJoinEmbed = discord.Embed(title='Stuff to do:',color=(random.choice(colors)))
+            ServerJoinEmbed = discord.Embed(title='Stuff to do:',color=discord.Color.random())
             ServerJoinEmbed.add_field(name="Help", value="Go ahead and write ` c!help` into your chat, and find out the many    commands we have as part of this bot! If you don't know what a certain command does, then try  `c!help_<command_name>` to find out more information about a command.", inline =False)
             ServerJoinEmbed.add_field(name='Important:', value='If you have admin permissions, or are the current owner of the  server, be sure to `c!info` about important things to know about this bot, including how it works, and   troubleshooting.', inline=False)
             ServerJoinEmbed.set_footer(text='Remember to use the prefix before each command!')
