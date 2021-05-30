@@ -144,7 +144,7 @@ class Events(commands.Cog):
 
                 MemberLeaveEmbed.timestamp = datetime.datetime.utcnow()
 
-                await c.send(embed=emMemberLeaveEmbed)
+                await c.send(embed=MemberLeaveEmbed)
 
     @commands.Cog.listener()
     async def on_guild_join(self,guild:discord.Guild):
