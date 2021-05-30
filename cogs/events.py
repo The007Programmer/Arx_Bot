@@ -111,7 +111,8 @@ class Events(commands.Cog):
             if c is None:
                 return
             if c.guild.id == member.guild.id:
-                MemberJoinEmbed=discord.Embed(title=f"Welcome {member.name}!",description=f"A New Member Joined! Welcome to {member.guild.name}!", color=random.choice(self.bot.color_list))
+                welcome_list=["Welcome ", "Say Hi to ", "Wassup ", "Yo! Whatup ", "Hey everyone! I'm "]
+                MemberJoinEmbed=discord.Embed(title=f"{random.choice(welcome_list)}{member.name}!",description=f"A New Member Joined! Welcome to {member.guild.name}!", color=random.choice(self.bot.color_list))
                 MemberJoinEmbed.set_thumbnail(url=member.avatar_url)
 
                 MemberJoinEmbed.set_author(name=member.name, icon_url=member.avatar_url)
