@@ -54,7 +54,9 @@ class Levelling(commands.Cog):
 
             await self.client.db.commit()
 
-    @commands.command(aliases=['level','rank'])
+    @commands.command(aliases=['level','rank'],
+    description="Shows current level!", 
+    usage="[username(if you want to see someone else's level)]")
     async def lvl(self, ctx, member: Memberh=None):
         if member is None:
             member = ctx.author
@@ -89,7 +91,9 @@ class Levelling(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(aliases=['ranks'])
+    @commands.command(aliases=['ranks'],
+    description="People with the most Levels in the Server!", 
+    usage="")
     async def rankings(self, ctx): 
         buttons = {}
         for i in range(1, 6):

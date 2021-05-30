@@ -10,7 +10,9 @@ class EmojiInfo(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(name="emojiinfo", aliases=["ei"])
+    @commands.command(name="emojiinfo", aliases=["ei"], 
+    description="Gives info on an emoji in this server!", 
+    usage="[emoji_name]")
     async def emoji_info(self, ctx, emoji: discord.Emoji = None):
         if not emoji:
             return await ctx.invoke(self.bot.get_command("help"), entity="emojiinfo")

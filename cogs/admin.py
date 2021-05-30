@@ -11,7 +11,9 @@ class Admin(commands.Cog):
         self.client = client
 
 
-    @commands.command(name="eval", aliases=["exec"])
+    @commands.command(name="eval", aliases=["exec"], 
+    description="Runs Code!", 
+    usage="```[language] <code> ```")
     async def _eval(self, ctx, *, code):
         await ctx.reply("Let me evaluate this code for you! Won't be a sec")
         code = clean_code(code)

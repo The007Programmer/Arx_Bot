@@ -13,12 +13,13 @@ This is an all-around Discord Bot, with many features, such as:
 * Currency System¹
 * Error Handler³
 * Giveaway System³
-* Custom Help Command (Not the ugly orginal bot-rendered one.)³
-* A Calculator³
+* Custom Paginated Help Command (Not the ugly orginal bot-rendered one.)³
+* A Welcoming and Leaving System³
 * Moderation Commands³
 * A Polling System³
 * Eval & Stat Commands²
 * A Leveling System³
+* Reaction-Roles²
 * and much more!
 
 [Invite The Bot to Your Server!](https://discord.com/oauth2/authorize?client_id=832409595791409242&permissions=8&scope=bot)

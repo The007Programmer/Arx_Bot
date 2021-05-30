@@ -12,7 +12,9 @@ class Info(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
+    @commands.command(
+    description="Setup Info for the Bot!", 
+    usage="")
     @commands.has_permissions(administrator=True)
     async def info(self, ctx):
         InfoEmbed = discord.Embed(title='Info',color=discord.Color.random())

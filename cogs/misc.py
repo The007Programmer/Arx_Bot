@@ -21,7 +21,7 @@ class Misc(commands.Cog):
         dpyVersion = discord.__version__
         serverCount = len(self.bot.guilds)
         memberCount = len(set(self.bot.get_all_members()))
-        version=1.0
+        version=1.2
         embed = discord.Embed(
             title=f"{self.bot.user.name} Stats",
             description="\uFEFF",
@@ -80,7 +80,9 @@ class Misc(commands.Cog):
             ternary = "enabled" if command.enabled else "disabled"
             await ctx.send(f"I have {ternary} {command.qualified_name} for you!")
 
-    @commands.command(aliases=['pl'])
+    @commands.command(aliases=['pl'],
+    description="Makes a poll in the current channel!", 
+    usage="[option1] or [option2]")
     async def poll(self, ctx,*,msg):
 	    channel = ctx.channel
 	    try:
@@ -95,7 +97,9 @@ class Misc(commands.Cog):
 	    await message_.add_reaction("2️⃣")
 
 
-    @commands.command(aliases=['sug'])
+    @commands.command(aliases=['sug'],
+    description="Command used for suggesting improvements to the server!", 
+    usage="[suggestion]")
     async def suggest(self, ctx, *, msg):
         cursor = await self.bot.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()
@@ -108,16 +112,10 @@ class Misc(commands.Cog):
             message = await channel.send(embed=SuggestEmbed)
             await message.add_reaction("🔼")
             await message.add_reaction("🔽")
-    
-    @commands.command()
-    @commands.is_owner()
-    async def see(self,ctx):
-        for g in self.bot.guilds:
-            personembed=discord.Embed()
-            personembed.add_field(name=f"Server Owner: {g.owner} + Server name:{g.name} + Server ID: {g.id}",value="⠀",inline=False)
-            await ctx.send(embed=personembed)
 
-    @commands.command(aliases=['ssc'])
+    @commands.command(aliases=['ssc'],
+    description="Sets the channel in which Suggestions will be posted!", 
+    usage="[#channel_name]")
     @commands.has_permissions(administrator=True)
     async def setsuggestionchannel(self, ctx, channel:discord.TextChannel):
         cursor = await self.bot.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
@@ -180,13 +178,11 @@ class Misc(commands.Cog):
         Em2.add_field(name='Answer:', value=random.choice(responses))
         await ctx.send(embed=Em2)
 
-    @commands.command()  #🅿🅸🅽🅶
-    async def ping(self,ctx):
-        await ctx.send(f'Pong! {round(self.bot.latency * 1000)}ms')
-
-    @commands.command()
+    @commands.command(
+    description="Invite this Bot to Your server!!", 
+    usage="")
     async def invite(self,ctx):
-    	InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/oauth2/authorize?  bot_id=832409595791409242&permissions=8&scope=bot",color=(random.choice(colors)))
+    	InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/api/oauth2/authorize?client_id=832409595791409242&permissions=8&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Flogin&scope=bot",color=(random.choice(colors)))
     	InviteEmbed.add_field(name="What does it do?",value='Here is a link to invite Cafe Bot to your  server!', inline = False)
     	InviteEmbed.set_footer(text='Remember to use the prefix before each command!')
     	await ctx.send(embed=InviteEmbed)

@@ -36,7 +36,9 @@ class Events(commands.Cog):
     async def on_ready(self):
         print(f"{self.__class__.__name__} Cog has been loaded\n-----")
 
-    @commands.command(aliases=['swc'])
+    @commands.command(aliases=['swc'],
+    description="Sets the channel in which Member Joins will be posted!", 
+    usage="[#channel_name]")
     async def setwelcomechannel(self, ctx, channel:discord.TextChannel):
         cursor = await self.bot.db1.execute(f"SELECT welcome_channel_id from welcomechannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()
@@ -67,7 +69,9 @@ class Events(commands.Cog):
                 await ctx.send(f"Successfully set the welcome channel to {channel.mention}")
                 await self.bot.db1.commit()
 
-    @commands.command(aliases=['slc'])
+    @commands.command(aliases=['slc'],
+    description="Sets the channel in which Member Leaves will be posted!", 
+    usage="[#channel_name]")
     async def setleavechannel(self, ctx, channel:discord.TextChannel):
         cursor = await self.bot.db1.execute(f"SELECT leave_channel_id from leavechannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()

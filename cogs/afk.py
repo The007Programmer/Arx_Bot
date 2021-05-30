@@ -32,7 +32,9 @@ class afk(commands.Cog):
             await msg.channel.send("Welcome back {}, I removed your AFK.".format(msg.author.mention), delete_after = 10)
             await msg.author.edit(nick=f"{msg.author.name}")
 
-    @commands.command(aliases=["away_from_keyboard"])
+    @commands.command(aliases=["away_from_keyboard"], 
+   description="Sets your AFK when you wanna let others know ur gone.", 
+   usage="[reason]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def afk(self, ctx, *, message = "AFK"):
         file = open("afk.json", "r")
