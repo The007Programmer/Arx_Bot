@@ -49,7 +49,7 @@ Well, anyway, to use it, there will be certain things you will have to replace i
 First things first: You will need to create a bot from your discord developer portal:
 ![bot-token1](https://user-images.githubusercontent.com/83626443/118029530-1bfc3580-b319-11eb-8452-48cf12541420.gif)
 
-Then, you need an API Key from [PGamerX](https://api-info.pgamerx.com/register.html). (Steps should be self explanatory.)
+Then, you need an API Key for PRSAW from [PGamerX](https://api-info.pgamerx.com/register.html). (Steps should be self explanatory.)
 
 Now, after these steps, this step can go 3 ways from here.
 
