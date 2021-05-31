@@ -5,5 +5,5 @@ List of replacements:
     - afk.py
         - Replace `afk1.json` with `afk.json`
     - levelling.py
-        - Replace `832285307965145118` with your server id
+        - Replace `832285307965145118` with your server id.
     
