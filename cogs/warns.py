@@ -10,7 +10,7 @@ class Warns(commands.Cog):
         
     @commands.command()
     @commands.guild_only()
-    @commands.has_role(566132980687568896)
+    @commands.has_permissions(administrator=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
         if member.id in [ctx.author.id, self.bot.user.id]:
             return await ctx.send("You cannot warn yourself or the bot!")
@@ -46,7 +46,7 @@ class Warns(commands.Cog):
             
     @commands.command()
     @commands.guild_only()
-    @commands.has_role(566132980687568896)
+    @commands.has_permissions(administrator=True)
     async def warns(self, ctx, member: discord.Member):
         warn_filter = {"user_id": member.id, "guild_id": member.guild.id}
         warns = await self.bot.warns.find_many_by_custom(warn_filter)

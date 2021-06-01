@@ -116,7 +116,7 @@ class Misc(commands.Cog):
     @commands.command(aliases=['ssc'],
     description="Sets the channel in which Suggestions will be posted!", 
     usage="[#channel_name]")
-    @commands.has_permissions(administrator=True)
+    @commands.has_permissions(manage_messages=True)
     async def setsuggestionchannel(self, ctx, channel:discord.TextChannel):
         cursor = await self.bot.db1.execute(f"SELECT suggestion_channel_id from suggestionchannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()

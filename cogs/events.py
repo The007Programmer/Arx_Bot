@@ -39,6 +39,7 @@ class Events(commands.Cog):
     @commands.command(aliases=['swc'],
     description="Sets the channel in which Member Joins will be posted!", 
     usage="[#channel_name]")
+    @commands.has_permissions(manage_messages=True)
     async def setwelcomechannel(self, ctx, channel:discord.TextChannel):
         cursor = await self.bot.db1.execute(f"SELECT welcome_channel_id from welcomechannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()
@@ -72,6 +73,7 @@ class Events(commands.Cog):
     @commands.command(aliases=['slc'],
     description="Sets the channel in which Member Leaves will be posted!", 
     usage="[#channel_name]")
+    @commands.has_permissions(manage_messages=True)
     async def setleavechannel(self, ctx, channel:discord.TextChannel):
         cursor = await self.bot.db1.execute(f"SELECT leave_channel_id from leavechannel WHERE guild_id = {ctx.guild.id}")
         data = await cursor.fetchone()

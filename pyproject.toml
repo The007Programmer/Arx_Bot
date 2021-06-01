@@ -1,25 +1,12 @@
 [tool.poetry]
-name = "repl_python3_MenuDocsTut"
+name = "repl_python3_CafeBot"
 version = "0.1.0"
 description = ""
 authors = ["MilkshakeCoder <<>>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pymongo = "^3.11.4"
-aiosqlite = "^0.17.0"
-discord = "^1.0.1"
-emojis = "^0.6.0"
 flask = "^2.0.1"
-motor = "^2.4.0"
-parsedatetime = "^2.6"
-prsaw = "^0.3.1"
-buttons = "^0.1.9"
-jishaku = "^1.20.0"
-expression-parser = "^0.0.5"
-dnspython = "^2.1.0"
-DiscordUtils = "^1.2.9"
-discord-py-slash-command = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 
