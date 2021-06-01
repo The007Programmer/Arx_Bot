@@ -49,7 +49,6 @@ import textwrap
 from traceback import format_exception
 import dns
 import expression
-from discord_slash import SlashCommand, SlashCommandOptionType, SlashContext
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -80,7 +79,7 @@ bot = commands.Bot(
     help_command=None,
     intents=intents,
 )
-slash = SlashCommand(bot,auto_register=True)  # change command_prefix='-' to command_prefix=get_prefix for custom prefixes
+# change command_prefix='-' to command_prefix=get_prefix for custom prefixes
 bot.config_token = os.environ["Token"]
 bot.connection_url = os.environ["Mongo"]
 bot.news_api_key = os.environ["News_Api"]

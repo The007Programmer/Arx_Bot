@@ -26,6 +26,7 @@ class Usage(commands.Cog):
 
     @commands.command(
         name="commandstats",
+        aliases=['cmdsts'],
         description="Show an overall usage for each command!"
     )
     @commands.cooldown(1, 5, commands.BucketType.guild)
