@@ -49,6 +49,7 @@ import textwrap
 from traceback import format_exception
 import dns
 import expression
+from discord_slash import SlashCommand
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -79,13 +80,11 @@ bot = commands.Bot(
     help_command=None,
     intents=intents,
 )
-# change command_prefix='-' to command_prefix=get_prefix for custom prefixes
+
 bot.config_token = os.environ["Token"]
 bot.connection_url = os.environ["Mongo"]
-bot.news_api_key = os.environ["News_Api"]
-# bot.joke_api_key = os.environ["x-rapidapi-key"]
-bot.api_key = os.environ['API_Key']
-
+bot.api_key = os.environ['RS_API_Key']
+slash=SlashCommand(bot, sync_commands=True)
 logging.basicConfig(level=logging.INFO)
 
 bot.DEFAULTPREFIX = DEFAULTPREFIX
@@ -93,8 +92,7 @@ bot.blacklisted_users = []
 bot.muted_users = {}
 bot.cwd = cwd
 
-bot.version = "v.1.4"
-# bot.load_extension("jishaku")
+bot.version = "v1.3"
 bot.colors = {
     "WHITE": 0xFFFFFF,
     "AQUA": 0x1ABC9C,
@@ -168,6 +166,10 @@ async def on_message(msg):
     await bot.process_commands(msg)
 
 bot.load_extension("jishaku")
+
+@slash.slash(description="Ping cmd")
+async def ping(ctx):
+    await ctx.send(f"{round(bot.latency * 1000)}ms")
 
 async def initialize():
 	await bot.wait_until_ready()

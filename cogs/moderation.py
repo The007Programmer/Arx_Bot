@@ -215,7 +215,10 @@ class Moderation(commands.Cog):
         )
         await ctx.send(embed=embed, delete_after=15)
 
-    @commands.command()
+    @commands.command(
+        description="Warns a User!!",
+        usage='<user>'
+    )
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
@@ -251,7 +254,10 @@ class Moderation(commands.Cog):
         except discord.HTTPException:
             await ctx.send(member.mention, embed=embed)
             
-    @commands.command()
+    @commands.command(
+        description="A command that shows how many warns a given user has!",
+        usage='<user>'
+    )
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def warns(self, ctx, member: discord.Member):
@@ -280,9 +286,11 @@ class Moderation(commands.Cog):
             length=1
         ).start(ctx)
 
-    @commands.command(aliases=["delwarn", "dw"])
-    @commands.has_role(566132980687568896)
+    @commands.command(aliases=["delwarn", "dw"], 
+        description="Deletes a given amount of warns from a user!",
+        ussage='<user> <warn_number>')
     @commands.guild_only()
+    @commands.has_permissions(administrator=True)
     async def deletewarn(self, ctx, member: discord.Member, warn: int = None):
         """Delete a warn / all warns from a given member"""
         filter_dict = {"user_id": member.id, "guild_id": member.guild.id}

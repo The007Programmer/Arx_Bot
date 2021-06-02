@@ -1,6 +1,6 @@
 # Requires pip install buttons
 from discord.ext import commands
-
+import asyncio
 from cogs.utils.util import Pag
 
 class Help(commands.Cog, name="Help command"):

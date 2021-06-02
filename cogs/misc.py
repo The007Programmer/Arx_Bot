@@ -152,7 +152,9 @@ class Misc(commands.Cog):
     async def jskhelp(self,ctx):
         await ctx.send_help('jsk')
 
-    @commands.command(aliases=['wel'])
+    @commands.command(aliases=['wel'],
+        description="A simple welcome command!",
+        ussage='<user>')
     async def welcome(self,ctx):
         await ctx.send("<a:welcome2:848026093251330059>"+"<a:welcome1:848026092509593621>"+"<a:spamhi:848026096733388800>")
 
@@ -182,7 +184,7 @@ class Misc(commands.Cog):
     description="Invite this Bot to Your server!!", 
     usage="")
     async def invite(self,ctx):
-    	InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/api/oauth2/authorize?client_id=832409595791409242&permissions=8&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Flogin&scope=bot",color=(random.choice(colors)))
+    	InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/api/oauth2/authorize?client_id=832409595791409242&permissions=8&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Flogin&scope=bot%20applications.commands",color=(random.choice(colors)))
     	InviteEmbed.add_field(name="What does it do?",value='Here is a link to invite Cafe Bot to your  server!', inline = False)
     	InviteEmbed.set_footer(text='Remember to use the prefix before each command!')
     	await ctx.send(embed=InviteEmbed)
