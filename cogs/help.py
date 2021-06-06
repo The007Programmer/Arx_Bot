@@ -98,6 +98,7 @@ class Help(commands.Cog, name="Help command"):
                 else:
                     await ctx.send("Entity not found.")
 
+
 # from discord.ext.commands import bot
 # class Help(commands.Cog):
 #     def __init__(self, client):

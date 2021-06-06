@@ -44,12 +44,12 @@ import contextlib
 import io
 import os
 import logging
-from prsaw import RandomStuff
 import textwrap
 from traceback import format_exception
 import dns
 import expression
 from discord_slash import SlashCommand
+import urllib.parse, urllib.request, re
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -167,9 +167,30 @@ async def on_message(msg):
 
 bot.load_extension("jishaku")
 
-@slash.slash(description="Ping cmd")
+@slash.slash(description="Ping Command!")
 async def ping(ctx):
     await ctx.send(f"{round(bot.latency * 1000)}ms")
+
+@slash.slash(description="Death and all of it's entirety...")
+async def die(ctx):
+    await ctx.send(f"What did you expect, huh? Welp, you commited suicide. Ur dead lol.")
+
+@slash.slash(description="Mentions a given user.")
+async def mention(ctx, member:discord.Member):
+    await ctx.send(f"{member.mention}")
+
+@slash.slash()
+async def cat(self, ctx):
+  response = requests.get('https://aws.random.cat/meow')
+  data = response.json()
+  embed = discord.Embed(
+      title = 'Kitty Cat 🐈',
+      description = 'Cats :star_struck:',
+      colour = discord.Colour.purple()
+      )
+  embed.set_image(url=data['file'])            
+  embed.set_footer(text="")
+  await ctx.send(embed=embed)
 
 async def initialize():
 	await bot.wait_until_ready()
