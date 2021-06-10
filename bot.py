@@ -50,6 +50,7 @@ import dns
 import expression
 from discord_slash import SlashCommand
 import urllib.parse, urllib.request, re
+from aiohttp import ClientSession
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -137,6 +138,15 @@ async def on_ready():
 
 rs = RandomStuff(async_mode = True, api_key = bot.api_key)
 
+class Help(commands.MinimalHelpCommand):
+    async def send_pages(self):
+        destination = self.get_destination()
+        for page in self.paginator.pages:
+            emby = discord.Embed(title="Help", description=page, inline=False)
+            await destination.send(embed=emby)
+
+bot.help_command = Help()
+
 @bot.event
 async def on_message(msg):
     # Ignore messages sent by yourself
@@ -179,18 +189,9 @@ async def die(ctx):
 async def mention(ctx, member:discord.Member):
     await ctx.send(f"{member.mention}")
 
-@slash.slash()
-async def cat(self, ctx):
-  response = requests.get('https://aws.random.cat/meow')
-  data = response.json()
-  embed = discord.Embed(
-      title = 'Kitty Cat 🐈',
-      description = 'Cats :star_struck:',
-      colour = discord.Colour.purple()
-      )
-  embed.set_image(url=data['file'])            
-  embed.set_footer(text="")
-  await ctx.send(embed=embed)
+async def get(session: object, url: object) -> object:
+    async with session.get(url) as response:
+        return await response.text()
 
 async def initialize():
 	await bot.wait_until_ready()
