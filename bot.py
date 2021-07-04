@@ -117,64 +117,6 @@ bot.colors = {
 }
 bot.color_list = [c for c in bot.colors.values()]
 
-
-@bot.event
-async def on_ready():
-    # On ready, print some details to standard out
-    print(
-        f"-----\nLogged in as: {bot.user.name} : {bot.user.id}\n-----\nMy current prefix is: {bot.DEFAULTPREFIX}\n-----"
-    )
-
-    for document in await bot.config.get_all():
-        print(document)
-
-    currentMutes = await bot.mutes.get_all()
-    for mute in currentMutes:
-        bot.muted_users[mute["_id"]] = mute
-
-    print(bot.muted_users)
-
-    print("Initialized Database\n-----")
-
-rs = RandomStuff(async_mode = True, api_key = bot.api_key)
-
-class Help(commands.MinimalHelpCommand):
-    async def send_pages(self):
-        destination = self.get_destination()
-        for page in self.paginator.pages:
-            emby = discord.Embed(title="Help", description=page, inline=False)
-            await destination.send(embed=emby)
-
-bot.help_command = Help()
-
-@bot.event
-async def on_message(msg):
-    # Ignore messages sent by yourself
-    if msg.author.bot:
-        return
-
-    # A way to blacklist users from the bot by not processing commands
-    # if the author is in the blacklisted_users list
-    if msg.author.id in bot.blacklisted_users:
-        return
-
-    # Whenever the bot is tagged, respond with its prefix
-    if msg.content.startswith(f"<@!{bot.user.id}>") and len(msg.content) == len(
-        f"<@!{bot.user.id}>"
-    ):
-        data = await bot.config.find_by_id(msg.guild.id)
-        if not data or "prefix" not in data:
-            prefix = bot.DEFAULTPREFIX
-        else:
-            prefix = data["prefix"]
-        await msg.channel.send(f"My prefix here is `{prefix}`", delete_after=15)
-    if 'ai-chat' in msg.channel.name:
-        if bot.user == msg.author:
-            return
-        response = await rs.get_ai_response(msg.content)
-        await msg.reply(response)
-    await bot.process_commands(msg)
-
 bot.load_extension("jishaku")
 
 @slash.slash(description="Ping Command!")

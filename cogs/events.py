@@ -171,6 +171,50 @@ class Events(commands.Cog):
             ServerJoinEmbed.add_field(name='Important:', value='If you have admin permissions, or are the current owner of the  server, be sure to `c!info` about important things to know about this bot, including how it works, and   troubleshooting.', inline=False)
             ServerJoinEmbed.set_footer(text='Remember to use the prefix before each command!')
             await welcome_channel.send(embed = ServerJoinEmbed)
+    
+    @commands.Cog.listener()
+    async def on_message(self,msg):
+        # Ignore messages sent by yourself
+        if msg.author.bot:
+            return
+
+        # A way to blacklist users from the bot by not processing commands
+        # if the author is in the blacklisted_users list
+        if msg.author.id in self.bot.blacklisted_users:
+            return
+        rs = RandomStuff(async_mode = True, api_key = self.bot.api_key)
+        # Whenever the bot is tagged, respond with its prefix
+        if msg.content.startswith(f"<@!{self.bot.user.id}>") and len(msg.content) == len(
+            f"<@!{self.bot.user.id}>"
+        ):
+            data = await self.bot.config.find_by_id(msg.guild.id)
+            if not data or "prefix" not in data:
+                prefix = self.bot.DEFAULTPREFIX
+            else:
+                prefix = data["prefix"]
+            await msg.channel.send(f"My prefix here is `{prefix}`", delete_after=15)
+        if 'ai-chat' in msg.channel.name:
+            if self.bot.user == msg.author:
+                return
+            response = await rs.get_ai_response(msg.content)
+            await msg.reply(response)
+        await self.bot.process_commands(msg)
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        # On ready, print some details to standard out
+        print(f"-----\nLogged in as: {self.bot.user.name} : {self.bot.user.id}\n-----\nMy current prefix is: {self.bot.DEFAULTPREFIX}\n-----")
+
+        for document in await self.bot.config.get_all():
+            print(document)
+
+        currentMutes = await self.bot.mutes.get_all()
+        for mute in currentMutes:
+            self.bot.muted_users[mute["_id"]] = mute
+
+        print(self.bot.muted_users)
+
+        print("Initialized Database\n-----")
 
 def setup(bot):
     bot.add_cog(Events(bot))

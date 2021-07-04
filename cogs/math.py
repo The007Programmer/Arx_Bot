@@ -7,7 +7,8 @@ class Math(commands.Cog):
 
     @commands.command(
     description="Adds 2 number inputs!", 
-    usage="<number1> <number2>")
+    usage="<number1> <number2>",
+    name="add")
     async def add(self,ctx, left : int, right : int):
 	    await ctx.send(left + right)
     @commands.command(aliases=['sub'], 

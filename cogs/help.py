@@ -1,208 +1,83 @@
-# Requires pip install buttons
-import discord
-from discord.ext import commands
-import asyncio
-from cogs.utils.util import Pag
+from typing import Optional
 
-class Help(commands.Cog, name="Help command"):
-    def __init__(self, bot):
-        self.bot = bot
-        # self.cmds_per_page = 10
-
-#     def get_command_signature(self, command: commands.Command, ctx: commands.Context):
-#         aliases = "|".join(command.aliases)
-#         cmd_invoke = f"[{command.name}|{aliases}]" if command.aliases else command.name
-
-#         full_invoke = command.qualified_name.replace(command.name, "")
-
-#         signature = f"{ctx.prefix}{full_invoke}{cmd_invoke} {command.signature}"
-#         return signature
-
-#     async def return_filtered_commands(self, walkable, ctx):
-#         filtered = []
-
-#         for c in walkable.walk_commands():
-#             try:
-#                 if c.hidden:
-#                     continue
-
-#                 elif c.parent:
-#                     continue
-
-#                 await c.can_run(ctx)
-#                 filtered.append(c)
-#             except commands.CommandError:
-#                 continue
-
-#         return self.return_sorted_commands(filtered)
-
-#     def return_sorted_commands(self, commandList):
-#         return sorted(commandList, key=lambda x: x.name)
-
-#     async def setup_help_pag(self, ctx, entity=None, title=None):
-#         entity = entity or self.bot
-#         title = title or self.bot.description
-
-#         pages = []
-
-#         if isinstance(entity, commands.Command):
-#             filtered_commands = (
-#                 list(set(entity.all_commands.values()))
-#                 if hasattr(entity, "all_commands")
-#                 else []
-#             )
-#             filtered_commands.insert(0, entity)
-
-#         else:
-#             filtered_commands = await self.return_filtered_commands(entity, ctx)
-
-#         for i in range(0, len(filtered_commands), self.cmds_per_page):
-#             next_commands = filtered_commands[i : i + self.cmds_per_page]
-#             commands_entry = ""
-
-#             for cmd in next_commands:
-#                 desc = cmd.short_doc or cmd.description
-#                 signature = self.get_command_signature(cmd, ctx)
-#                 subcommand = "Has subcommands" if hasattr(cmd, "all_commands") else ""
-
-#                 commands_entry += (
-#                     f"• **__{cmd.name}__**\n```\n{signature}\n```\n{desc}\n"
-#                     if isinstance(entity, commands.Command)
-#                     else f"• **__{cmd.name}__**\n{desc}\n    {subcommand}\n"
-#                 )
-#             pages.append(commands_entry)
-
-#         await Pag(title=title, color=0xCE2029, entries=pages, length=1).start(ctx)
-
-#     @commands.Cog.listener()
-#     async def on_ready(self):
-#         print(f"{self.__class__.__name__} cog has been loaded\n-----")
-
-#     @commands.command(
-#         name="help", aliases=["h", "commands"], description="The help command!"
-#     )
-#     async def help_command(self, ctx, *, entity=None):
-#         if not entity:
-#             await self.setup_help_pag(ctx)
-
-#         else:
-#             cog = self.bot.get_cog(entity)
-#             if cog:
-#                 await self.setup_help_pag(ctx, cog, f"{cog.qualified_name}'s commands")
-
-#             else:
-#                 command = self.bot.get_command(entity)
-#                 if command:
-#                     await self.setup_help_pag(ctx, command, command.name)
-
-#                 else:
-#                     await ctx.send("Entity not found.")
+from discord import Embed
+from discord.utils import get
+from discord.ext.menus import MenuPages, ListPageSource
+from discord.ext.commands import Cog
+from discord.ext.commands import command
 
 
-# from discord.ext.commands import bot
-# import random
-# class Help(commands.Cog):
-#     def __init__(self, client):
-#         self.client = client
-#         self.help_pages = []
-#         self.gaws_commands = [
-#             'gstart',
-#             'reroll'
-#         ]
-#         self.tips = [
-#             "Did you know that the bot has tickets!"
-#         ]
+def syntax(command):
+	cmd_and_aliases = "|".join([str(command), *command.aliases])
+	params = []
 
-#     def addPage(self, embed : discord.Embed):
-#         self.help_pages.append(embed)
+	for key, value in command.params.items():
+		if key not in ("self", "ctx"):
+			params.append(f"[{key}]" if "NoneType" in str(value) else f"<{key}>")
 
-#     @commands.Cog.listener()
-#     async def on_ready(self):
-#         print("Help command ready!")
+	params = " ".join(params)
 
-#     @commands.group(invoke_without_command = True)
-#     async def help(self, ctx, category = None):
-#         page1 = discord.Embed(title = "Help", color = ctx.author.color, description = f"""
-#         **Type `$help[modulename]` for more information! for example ($helpfun) will show you all the command are in that module!**\n
-#         My prefix is `$`
-#         """)
-#         page1.add_field(name = f":hammer:Moderation Commands:", value = "`Kick`, `Ban`, `Softban`, `Purge`, `Lock`, `Unlock`, `Mute`, `Unmute`, `Unban`, `createrole`, `Announce`, `nick`, `setmuterole`, `setautorole`.", inline=True)
-#         page1.add_field(name = f":information: Information Commands:", value = f"`userinfo`, `serverinfo`, `whois`, `channelinfo`, `botinfo`.", inline=True)
-#         page1.add_field(name = f"Math Commands :", value = f"`add`, `subtract`, `multiply`, `divide`, `square`, `sqrt`.", inline=True)
-#         page1.add_field(name = f":gift: Giveaways: ", value = "`gstart`, `reroll`.", inline=True)
-#         page1.add_field(name = f":ticket: Tickets [4]", value = f"`new`, `close`, `addticketrole`, `setticketlogs`", inline=True)
-#         page1.set_footer(text = f"Page (1 / 3)")
-#         self.addPage(page1)
+	return f"`{cmd_and_aliases} {params}`"
 
-#         page2 = discord.Embed(title = "Help",color = ctx.author.color, description = f"""
-#         **Type `$help[modulename]` for more information! for example ($helpfun) will show you all the command are in that module!**\n
-#         My prefix defult is `$`
-#         """)
-#         page2.set_footer(text = f"Page (2 / 3)")
-#         self.addPage(page2)
-#         page3 = discord.Embed(title = "Help Center and Links", color = ctx.author.color,
-#         description = """Info about required / optional arguments
-#         """
-#         )
-#         page3.add_field(name = 'Required Arguments', value = "<> = means a required argument!\n[] = means an optional argument!")
-#         page3.add_field(name = 'Embed Info', value = "If no response is detected we will clear all reactions!")
-#         page3.add_field(name = "Tip :coin::", value =f"**{random.choice(self.tips)}**")
-#         page3.set_footer(text = f"Page (3 / 3)")
-#         self.addPage(page3)
-#         buttons = [
-#             "⏮️",
-#             "⬅️",
-#             "🔐",
-#             "➡️",
-#             "⏭️"    
-#         ]
-#         current = 0
-#         msg = await ctx.send(embed = self.help_pages[current])
 
-#         for button in buttons:
-#             await msg.add_reaction(button)
+class HelpMenu(ListPageSource):
+	def __init__(self, ctx, data):
+		self.ctx = ctx
 
-#         def check(reaction, user):
-#             return user == ctx.author and str(reaction.emoji) in buttons
+		super().__init__(data, per_page=9)
 
-#         while True: 
-#             try:
-#                 reaction, user = await self.client.wait_for("reaction_add", check = check, timeout = 300)
-            
-#             except asyncio.TimeoutError:
-#                 await msg.clear_reactions()
-#                 return
-#             else:
-#                 previous_page = current
+	async def write_page(self, menu, fields=[]):
+		offset = (menu.current_page*self.per_page) + 1
+		len_data = len(self.entries)
 
-#                 if str(reaction.emoji) == "⏮️":
-#                     current = 0
-#                     button = buttons[0]
-#                     await msg.remove_reaction(button, ctx.author)
-                
-#                 elif str(reaction.emoji) == "⬅️" and current > 0:
-#                     current -= 1
-#                     button = buttons[1]
-#                     await msg.remove_reaction(button, ctx.author)
-                
-#                 elif str(reaction.emoji) == "➡️" and current < len(self.help_pages)-1:
-#                     current += 1
-#                     button = buttons[3]
-#                     await msg.remove_reaction(button, ctx.author)
-                
-#                 elif str(reaction.emoji) == "⏭️":
-#                     current = len(self.help_pages) - 1
-#                     button = buttons[4]
-#                     await msg.remove_reaction(button, ctx.author)
+		embed = Embed(title="Help",
+					  description="All Commands",
+					  colour=self.ctx.author.colour)
+		embed.set_thumbnail(url=self.ctx.guild.me.avatar_url)
+		embed.set_footer(text=f"{offset:,} - {min(len_data, offset+self.per_page-1):,} of {len_data:,} commands.")
 
-#                 elif str(reaction.emoji) == "🔐":
-#                     await msg.clear_reactions()
-#                     return
-#                     button = buttons[2]
-#                     await msg.remove_reaction(button, ctx.author)
+		for name, value in fields:
+			embed.add_field(name=name, value=value, inline=False)
 
-#                 if current != previous_page:
-#                     await msg.edit(embed = self.help_pages[current])
+		return embed
+
+	async def format_page(self, menu, entries):
+		fields = []
+
+		for entry in entries:
+			fields.append((entry.brief or "No description", syntax(entry)))
+
+		return await self.write_page(menu, fields)
+
+
+class Help(Cog):
+	def __init__(self, bot):
+		self.bot = bot
+		self.bot.remove_command("help")
+
+	async def cmd_help(self, ctx, command):
+		embed = Embed(title=f"Help with `{command}`",
+					  description=syntax(command),
+					  colour=ctx.author.colour)
+		embed.add_field(name="Command description", value=command.help)
+		await ctx.send(embed=embed)
+
+	@command(name="help")
+	async def show_help(self, ctx, cmd: Optional[str]):
+		"""Shows this message."""
+		if cmd is None:
+			menu = MenuPages(source=HelpMenu(ctx, list(self.bot.commands)),
+							 delete_message_after=True,
+							 timeout=60.0)
+			await menu.start(ctx)
+
+		else:
+			if (command := get(self.bot.commands, name=cmd)):
+				await self.cmd_help(ctx, command)
+
+			else:
+				await ctx.send("That command does not exist.")
+
 
 def setup(bot):
-    bot.add_cog(Help(bot))
+	bot.add_cog(Help(bot))
