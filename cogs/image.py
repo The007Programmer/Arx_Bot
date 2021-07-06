@@ -29,7 +29,7 @@ class Image(commands.Cog):
       cat_list=['A New Challenger has entered the Arena - Kittysaurus', 'A new cat spawned in!', 'Le Cat', "I'm a furball and I am adorable. What am I?", 'Scatcat', '']
       embed = discord.Embed(
           title = random.choice(cat_list),
-          description = 'Cats :star_struck:',
+          description = 'Cat :star_struck:',
           colour = discord.Colour.purple()
           )
       embed.set_image(url=data['file'])            

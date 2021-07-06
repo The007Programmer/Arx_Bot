@@ -44,7 +44,9 @@ class Config(commands.Cog):
     """
 
     @commands.command(
-        name="blacklist", description="Blacklist a user from the bot", usage="<user>"
+        name="blacklist", 
+        description="Blacklist a user from the bot", 
+        usage="<user>"
     )
     @commands.is_owner()
     async def blacklist(self, ctx, user: discord.Member):

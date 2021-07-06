@@ -78,7 +78,7 @@ bot = commands.Bot(
     command_prefix=get_prefix,
     case_insensitive=True,
     owner_id=759919832539332639,
-    help_command=None,
+    # help_command=None,
     intents=intents,
 )
 
@@ -130,6 +130,10 @@ async def die(ctx):
 @slash.slash(description="Mentions a given user.")
 async def mention(ctx, member:discord.Member):
     await ctx.send(f"{member.mention}")
+
+@slash.slash(description="Slaps a given user.")
+async def slap(ctx, member:discord.Member):
+    await ctx.send(f"{member.mention} was slapped by {ctx.author}.")
 
 async def get(session: object, url: object) -> object:
     async with session.get(url) as response:

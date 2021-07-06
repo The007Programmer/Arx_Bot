@@ -402,7 +402,9 @@ class Currency(commands.Cog):
     usage="")  #🆂🅷🅾🅿
     async def shop(self,ctx):
         em = discord.Embed(title="Shop")
-
+        """
+        Unblacklist someone from the bot
+        """
         for item in mainshop:
             name = item["name"]
             price = item["price"]
