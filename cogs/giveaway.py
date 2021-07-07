@@ -28,6 +28,7 @@ def convert(argument):
 
 
 class Giveaway(commands.Cog):
+    """Giveaways!!!"""
     def __init__(self, bot):
         self.bot = bot
 

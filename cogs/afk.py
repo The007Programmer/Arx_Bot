@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import json
 
-class afk(commands.Cog):
+class Afk(commands.Cog):
     def __init__(self, bot):
        self.bot = bot
   
@@ -33,8 +33,8 @@ class afk(commands.Cog):
             await msg.author.edit(nick=f"{msg.author.name}")
 
     @commands.command(aliases=["away_from_keyboard"], 
-   description="Sets your AFK when you wanna let others know ur gone.", 
-   usage="[reason]")
+    description="Sets your AFK when you wanna let others know ur gone.", 
+    usage="[reason]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def afk(self, ctx, *, message = "AFK"):
         file = open("afk1.json", "r")
@@ -60,4 +60,4 @@ class afk(commands.Cog):
 
 
 def setup(bot):
-  bot.add_cog(afk(bot))
+  bot.add_cog(Afk(bot))
