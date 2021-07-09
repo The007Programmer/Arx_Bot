@@ -159,6 +159,14 @@ class Misc(commands.Cog):
     async def welcome(self,ctx):
         await ctx.send("<a:welcome2:848026093251330059>"+"<a:welcome1:848026092509593621>"+"<a:spamhi:848026096733388800>")
 
+    @commands.command(aliases=['src'],
+        description="Source Code for This Bot!",
+        ussage='')
+    async def source(self,ctx):
+        embed = discord.Embed()
+        embed.add_field(name='Source Code for Cafe Bot:', value='[Cafe Bot Github Page](https://github.com/MilkshakeTheCoder/Cafe_Bot)')
+        await ctx.send(embed=embed)
+
     @commands.command(
     aliases=['8ball'], 
     description="A virtual 8ball for all your answers!", 

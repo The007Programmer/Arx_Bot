@@ -12,6 +12,9 @@
 #    description="Shows up on Help!", 
 #    usage="shows up in help_cmd")
 
+#note add help descriptions for all cogs and cmds 
+#"""sss"""
+
 import discord
 #discord lib (async lib)
 # Note to self: when writing bot, make sure version of python is on 3.8.5+ bottom left of screen (vscode)
