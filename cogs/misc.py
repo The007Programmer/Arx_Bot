@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 
 class Misc(commands.Cog):
+    """Miscellaneous Commands"""
     def __init__(self, bot):
         self.bot = bot
 
@@ -33,7 +34,7 @@ class Misc(commands.Cog):
         embed.add_field(name="Total Guilds:", value=serverCount)
         embed.add_field(name="Total Users:", value=memberCount)
         embed.add_field(name="Bot Developers:", value="<@759919832539332639> and <@724275771278884906>")
-        embed.set_footer(text=f"Carpe Noctem | {self.bot.user.name}")
+        embed.set_footer(text=f"Les Goooo | {self.bot.user.name}")
         embed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
         await ctx.send(embed=embed)
 
