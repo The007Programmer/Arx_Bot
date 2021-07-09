@@ -5,6 +5,7 @@ from discord.ext import commands
 import platform
 
 class Channels(commands.Cog):
+    """c!help Channels"""
     def __init__(self, bot):
         self.bot = bot
 
@@ -26,36 +27,19 @@ class Channels(commands.Cog):
     )
     @commands.bot_has_guild_permissions(manage_channels=True)
     async def channelstats(self, ctx):
+        """Shows stats for this channel."""
         channel = ctx.channel
-
-        embed = discord.Embed(
-            title=f"Stats for **{channel.name}**",
-            description=f"{'Category: {}'.format(channel.category.name) if channel.category else 'This channel is not in a category'}",
-            color=random.choice(self.bot.color_list),
-        )
+        embed = discord.Embed(title=f"Stats for **{channel.name}**",description=f"{'Category: {}'.format(channel.category.name) if channel.category else 'This channel is not in a category'}",color=random.choice(self.bot.color_list))
         embed.add_field(name="Channel Guild", value=ctx.guild.name, inline=False)
         embed.add_field(name="Channel Id", value=channel.id, inline=False)
-        embed.add_field(
-            name="Channel Topic",
-            value=f"{channel.topic if channel.topic else 'No topic.'}",
-            inline=False,
-        )
+        embed.add_field(name="Channel Topic",value=f"{channel.topic if channel.topic else 'No topic.'}",inline=False)
         embed.add_field(name="Channel Position", value=channel.position, inline=False)
-        embed.add_field(
-            name="Channel Slowmode Delay", value=channel.slowmode_delay, inline=False
-        )
-        embed.add_field(name="Channel is nsfw?", value=channel.is_nsfw(), inline=False)
-        embed.add_field(name="Channel is news?", value=channel.is_news(), inline=False)
-        embed.add_field(
-            name="Channel Creation Time", value=channel.created_at, inline=False
-        )
-        embed.add_field(
-            name="Channel Permissions Synced",
-            value=channel.permissions_synced,
-            inline=False,
-        )
+        embed.add_field(name="Channel Slowmode Delay", value=channel.slowmode_delay, inline=False)
+        embed.add_field(name="Channel is NSFW?", value=channel.is_nsfw(), inline=False)
+        embed.add_field(name="Channel is News?", value=channel.is_news(), inline=False)
+        embed.add_field(name="Channel Creation Time", value=channel.created_at, inline=False)
+        embed.add_field(name="Channel Permissions Synced",value=channel.permissions_synced,inline=False)
         embed.add_field(name="Channel Hash", value=hash(channel), inline=False)
-
         await ctx.send(embed=embed)
 
     @commands.group(invoke_without_command=True)
@@ -63,28 +47,22 @@ class Channels(commands.Cog):
     async def new(self, ctx):
         await ctx.send("Invalid sub-command passed.")
 
-    @new.command(
-        name="category",
-        description="Create a new category",
-        usage="<role> <Category name>",
-    )
+    @new.command(name="category",description="Create a new category",usage="<role> <Category name>",)
     @our_custom_check()
     async def category(self, ctx, role: discord.Role, *, name):
+        """Used to create new Category."""
         overwrites = {
             ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False),
             ctx.guild.me: discord.PermissionOverwrite(read_messages=True),
             role: discord.PermissionOverwrite(read_messages=True),
         }
         category = await ctx.guild.create_category(name=name, overwrites=overwrites)
-        await ctx.send(f"Hey dude, I made {category.name} for ya!")
+        await ctx.send(f"{category.name} has been created.")
 
-    @new.command(
-        name="channel",
-        description="Create a new channel",
-        usage="<role> <channel name>",
-    )
+    @new.command(name="channel",description="Create a new channel",usage="<role> <channel name>",)
     @our_custom_check()
     async def channel(self, ctx, role: discord.Role, *, name):
+        """Used to create new Channel."""
         overwrites = {
             ctx.guild.default_role: discord.PermissionOverwrite(read_messages=False),
             ctx.guild.me: discord.PermissionOverwrite(read_messages=True),
@@ -107,6 +85,7 @@ class Channels(commands.Cog):
     )
     @our_custom_check()
     async def _category(self, ctx, category: discord.CategoryChannel, *, reason=None):
+        """Used to delete a Category."""
         await category.delete(reason=reason)
         await ctx.send(f"hey! I deleted {category.name} for you")
 
@@ -115,9 +94,10 @@ class Channels(commands.Cog):
     )
     @our_custom_check()
     async def _channel(self, ctx, channel: discord.TextChannel = None, *, reason=None):
+        """Used to delete a Channel."""
         channel = channel or ctx.channel
         await channel.delete(reason=reason)
-        await ctx.send(f"hey! I deleted {category.name} for you")
+        await ctx.send(f"hey! I deleted {channel.name} for you")
 
     @commands.command(
         name="lockdown",
@@ -126,6 +106,7 @@ class Channels(commands.Cog):
     )
     @our_custom_check()
     async def lockdown(self, ctx, channel: discord.TextChannel = None):
+        """Sets the Channel into Lockdown."""
         channel = channel or ctx.channel
         if ctx.guild.default_role not in channel.overwrites:
             # This is the same as the elif except it handles agaisnt empty overwrites dicts

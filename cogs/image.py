@@ -23,17 +23,18 @@ class Image(commands.Cog):
 
     @commands.command()
     async def cat(self, ctx):
-      response = requests.get('https://aws.random.cat/meow')
-      data = response.json()
-      cat_list=['A New Challenger has entered the Arena - Kittysaurus', 'A new cat spawned in!', 'Le Cat', "I'm a furball and I am adorable. What am I?", 'Scatcat', '']
-      embed = discord.Embed(
-          title = random.choice(cat_list),
-          description = 'Cat :star_struck:',
-          colour = discord.Colour.purple()
-          )
-      embed.set_image(url=data['file'])            
-      embed.set_footer(text="")
-      await ctx.send(embed=embed)
+        """Random Cats"""
+        response = requests.get('https://aws.random.cat/meow')
+        data = response.json()
+        cat_list=['A New Challenger has entered the Arena - Kittysaurus', 'A new cat spawned in!', 'Le Cat', "I'm a furball and I am adorable. What am I?", 'Scatcat', '']
+        embed = discord.Embed(
+            title = random.choice(cat_list),
+            description = 'Cat :star_struck:',
+            colour = discord.Colour.purple()
+            )
+        embed.set_image(url=data['file'])            
+        embed.set_footer(text="")
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Image(bot))

@@ -127,11 +127,12 @@ beg_list = ['Some shady guy on the street', 'The local millionaire', 'Your mom',
 gave_list = ['gave', 'dropped', 'shed', 'bestowed upon you', 'offered', 'handed']
 earn_list = ['Your boss', 'Your manager', 'The local Subway©', 'In-In-Out', 'Your Desk']
 paid_list = ['paid', 'rewarded', 'tipped', 'endowed', 'financed']
-fish_list = ['1 Fish <:commonfish:828822337197572146>', '2 Fish <:commonfish:828822337197572146>', '3Fish <:commonfish:828822337197572146>', '4 Fish <:commonfish:828822337197572146>']
+fish_list = ['1 Fish <:commonfish:841428882095472660>', '2 Fish <:commonfish:841428882095472660>', '3 Fish <:commonfish:841428882095472660>', '4 Fish <:commonfish:841428882095472660>']
 hunt_num_list = ['1', '2', '3', '4']
 hunt_list = [f'{random.choice(hunt_num_list)} Skunk(s) 🦨', f'{random.choice(hunt_num_list)} Rabbit(s)🐇', f' {random.choice(hunt_num_list)} Deer 🦌', f'{random.choice(hunt_num_list)} Duck(s) 🦆']
 
 class Currency(commands.Cog):
+    """c!help Currency"""
     def __init__(self, client):
         self.client = client
 
@@ -139,36 +140,30 @@ class Currency(commands.Cog):
     @commands.command(aliases=['bal'], 
     description="Shows your balance.", 
     usage="")  #🅱🅰🅻🅰🅽🅲🅴
-    async def balance(self,ctx):  #BALANCE
-    	await open_account(ctx.author)
-    	user = ctx.author
-    	users = await get_bank_data()
-    	wallet_amt = users[str(user.id)]['wallet']
-    	bank_amt = users[str(user.id)]['bank']
-    	BalanceEmbed = discord.Embed(title=f"{ctx.author.name}'s Balance",color=(random.choice(colors)))
-    	BalanceEmbed.add_field(name="Wallet Balance", value=wallet_amt)
-    	BalanceEmbed.add_field(name="Bank Balance", value=bank_amt)
-    	await ctx.send(embed=BalanceEmbed)
+    async def balance(self,ctx):
+        """Shows your balance."""
+        await open_account(ctx.author)
+        user = ctx.author
+        users = await get_bank_data()
+        wallet_amt = users[str(user.id)]['wallet']
+        bank_amt = users[str(user.id)]['bank']
+        BalanceEmbed = discord.Embed(title=f"{ctx.author.name}'s Balance",color=discord.Color.random)
+        BalanceEmbed.add_field(name="Wallet Balance", value=wallet_amt)
+        BalanceEmbed.add_field(name="Bank Balance", value=bank_amt)
+        await ctx.send(embed=BalanceEmbed)
 
     @commands.command(
     description="Imagine begging for money.", 
     usage="")  #🅱🅴🅶
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def beg(self,ctx):  #BEG
+        """Imagine begging for money."""
         await open_account(ctx.author)
-
         users = await get_bank_data()
-
         user = ctx.author
-
         earnings = random.randrange(101)
-
-        await ctx.send(
-            f"{random.choice(beg_list)} {random.choice(gave_list)} you {earnings} coins!"
-        )
-
+        await ctx.send(f"{random.choice(beg_list)} {random.choice(gave_list)} you {earnings} coins!")
         users[str(user.id)]['wallet'] += earnings
-
         with open('mainbank1.json', 'w') as f:
             json.dump(users, f)
 
@@ -186,18 +181,13 @@ class Currency(commands.Cog):
     usage="")  #🅴🅰🆁🅽
     @commands.cooldown(1, 1800, commands.BucketType.user)
     async def earn(self,ctx):
+        """Earning money for work!"""
         await open_account(ctx.author)
-
         users = await get_bank_data()
-
         user = ctx.author
-
         earnings = random.randrange(10001)
-
         await ctx.send(f"{random.choice(earn_list)} {random.choice(paid_list)} you {earnings} coins!")
-
         users[str(user.id)]['wallet'] += earnings
-
         with open('mainbank1.json', 'w') as f:
             json.dump(users, f)
 
@@ -206,84 +196,64 @@ class Currency(commands.Cog):
     usage="")  #🅵🅸🆂🅷
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def fish(self,ctx):
-    	await open_account(ctx.author)
-
-    	users = await get_bank_data()
-
-    	user = ctx.author
-
-    	earnings = random.randrange(201)
-
-    	await ctx.send(
-    		f"You got {random.choice(fish_list)} which is worth {earnings} coins!"
-    	)
-
-    	if earnings < 27:#there you go
-    		await ctx.send('Try to get a better catch next time!')
-
-    	if earnings > 120:
-    		await ctx.send('Wow! What a whopper!')
-
-    	users[str(user.id)]['wallet'] += earnings
-
-    	with open('mainbank1.json', 'w') as f:
-    		json.dump(users, f)
+        """Have a nice day with Jack Manifold at the Lake."""
+        await open_account(ctx.author)
+        users = await get_bank_data()
+        user = ctx.author
+        earnings = random.randrange(201)
+        await ctx.send(f"You got {random.choice(fish_list)} which is worth {earnings} coins!")
+        if earnings == 0:
+            await ctx.send('You suck at fishing and got no money. 😆')
+        if earnings < 27:
+        	await ctx.send('Try to get a better catch next time!')
+        if earnings > 120:
+        	await ctx.send('Wow! What a whopper!')
+        users[str(user.id)]['wallet'] += earnings
+        with open('mainbank1.json', 'w') as f:
+        	json.dump(users, f)
 
     @commands.command(
     description="Go hunting! (And hopefully don't die)", 
     usage="")  #🅷🆄🅽🆃
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def hunt(self,ctx):
-    	await open_account(ctx.author)
-
-    	users = await get_bank_data()
-
-    	user = ctx.author
-
-    	earnings = random.randrange(501)
-
-    	await ctx.send(
-    		f"You got {random.choice(hunt_list)} which is worth {earnings} coins!"
-    	)
-
-    	if earnings < 27:
-    		await ctx.send('Try to get a better catch next time!')
-
-    	if earnings > 120:
-    		await ctx.send('Great Hunt!')
-
-    	users[str(user.id)]['wallet'] += earnings
-
-    	with open('mainbank1.json', 'w') as f:
-    		json.dump(users, f)
+        """Go hunting! (And hopefully don't die)"""
+        await open_account(ctx.author)
+        users = await get_bank_data()
+        user = ctx.author
+        earnings = random.randrange(501)
+        await ctx.send(f"You got {random.choice(hunt_list)} which is worth {earnings} coins!")
+        if earnings == 0:
+            await ctx.send('You suck at hunting and got no money. 😆')
+        if earnings < 27:
+        	await ctx.send('Try to get a better catch next time!')
+        if earnings > 120:
+        	await ctx.send('Great Hunt!')
+        users[str(user.id)]['wallet'] += earnings
+        with open('mainbank1.json', 'w') as f:
+        	json.dump(users, f)
 
     @commands.command(aliases=['with'], 
     description="Withdraws money from your bank!", 
     usage="<amt_of_money>")  #🆆🅸🆃🅷🅳🆁🅰🆆
     async def withdraw(ctx, amount=None):  #WITHDRAW
+        """Withdraws money from your bank!"""
         await open_account(ctx.author)
-
         if amount == None:
             await ctx.send('Please enter a proper amount.')
             return
-
         bal = await update_bank(ctx.author)
         if amount == 'all':
             amount = bal[0]
-
         amount = int(amount)
         if amount > bal[1]:
-            await ctx.send(
-                "You are either withdrawing too much money, or don't have enough money in your bank. Should we report you for stealing?"
-            )
+            await ctx.send("You are either withdrawing too much money, or don't have enough money in your bank. Should we report you for stealing?")
             return
         if amount < 0:
             await ctx.send('Amount must be positive!')
             return
-
         await update_bank(ctx.author, amount)
         await update_bank(ctx.author, -1 * amount, 'bank')
-
         await ctx.send(f'You withdrew {amount} coins!')
 
 
@@ -291,16 +261,14 @@ class Currency(commands.Cog):
     description="Deposit's Money into your bank!", 
     usage="<amt_of_money>")  #🅳🅴🅿🅾🆂🅸🆃
     async def deposit(self, ctx, amount=None):  #DEPOSIT
+        """Deposit's Money into your bank!"""
         await open_account(ctx.author)
-
         if amount == None:
             await ctx.send('Please enter a proper amount.')
             return
-
         bal = await update_bank(ctx.author)
         if amount == 'all':
             amount = bal[0]
-
         amount = int(amount)
         if amount > bal[0]:
             await ctx.send('You are depositing more money than you have.')
@@ -308,73 +276,61 @@ class Currency(commands.Cog):
         if amount < 0:
             await ctx.send('Amount must be positive!')
             return
-
         await update_bank(ctx.author, -1 * amount)
         await update_bank(ctx.author, amount, 'bank')
-
         await ctx.send(f'You deposited {amount} coins!')
 
     @commands.command(
     description="Sends money to another person. Perfect for giveaways!", 
     usage="<@username> <amt_of_money>")  #🆂🅴🅽🅳
     async def send(self, ctx, member: discord.Member, amount=None):  #SEND
+        """Sends money to another person. Perfect for giveaways!"""
         await open_account(ctx.author)
         await open_account(member)
-
         if amount == None:
             await ctx.send('Please enter a proper amount.')
             return
-
         bal = await update_bank(ctx.author)
         if amount == 'all':
             amount = bal[0]
-
         amount = int(amount)
         if amount > bal[1]:
-            await ctx.send('You are depositing more money than you have.')
+            await ctx.send('You are sending more money than you have.')
             return
         if amount < 0:
             await ctx.send('Amount must be positive!')
             return
-
         await update_bank(ctx.author, -1 * amount, 'bank')
         await update_bank(member, amount, 'bank')
-
-        await ctx.send(f'You sent {amount} coins!')
+        await ctx.send(f'You sent {member} {amount} coins!')
 
     @commands.command(
     description="Robs from a given user.", 
     usage="<@username>")  #🆁🅾🅱
     async def rob(self, ctx, member: discord.Member):  #ROB
+        """Sends money to another person. Perfect for giveaways!"""
         await open_account(ctx.author)
         await open_account(member)
-
         bal = await update_bank(member)
-
         if bal[0] < 100:
             await ctx.send(
-                "You're wasting your time with this noob! Go rob someone else.")
+                "You're wasting your time with this noob! He's got less than a 100. Go rob someone else.")
             return
-
         earnings = random.randrange(0, bal[0])
-
         await update_bank(ctx.author, earnings, 'bank')
         await update_bank(member, -1 * earnings, 'bank')
-
         await ctx.send(f'You robbed {earnings} coins!')
 
     @commands.command(
     description="Gambling in Las Vegas!", 
     usage="<amt_of_money_gambling>")  #🆂🅻🅾🆃🆂
     async def slots(self,ctx, amount=None):  #SLOTS
+        """Gambling in Las Vegas!"""
         await open_account(ctx.author)
-
         if amount == None:
             await ctx.send('Please enter a proper amount.')
             return
-
         bal = await update_bank(ctx.author)
-
         amount = int(amount)
         if amount > bal[0]:
             await ctx.send('You dont have that much money!')
@@ -382,14 +338,11 @@ class Currency(commands.Cog):
         if amount < 0:
             await ctx.send('Amount must be positive!')
             return
-
         final = []
         for i in range(3):
             a = random.choice(['X', '0', 'Q'])
             final.append(a)
-
         await ctx.send(str(final))
-
         if final[0] == final[1] or final[0] == final[2] or final[2] == final[1]:
             await update_bank(ctx.author, 2 * amount)
             await ctx.send('You won slots!')
@@ -401,26 +354,22 @@ class Currency(commands.Cog):
     description="Stuff you can buy with your collected money!", 
     usage="")  #🆂🅷🅾🅿
     async def shop(self,ctx):
+        """Stuff you can buy with your money!"""
         em = discord.Embed(title="Shop")
-        """
-        Unblacklist someone from the bot
-        """
         for item in mainshop:
             name = item["name"]
             price = item["price"]
             desc = item["description"]
             em.add_field(name=name, value=f"${price} | {desc}", inline=False)
-
         await ctx.send(embed=em)
 
     @commands.command(
     description="Buys something from the shop!", 
     usage="[item_name]")  #🅱🆄🆈
     async def buy(self,ctx, item, amount=1):
+        """Buys something from the shop!"""
         await open_account(ctx.author)
-
         res = await buy_this(ctx.author, item, amount)
-
         if not res[0]:
             if res[1] == 1:
                 await ctx.send("That Object isn't there!")
@@ -430,39 +379,34 @@ class Currency(commands.Cog):
                     f"You don't have enough money in your wallet to buy {amount} {item}"
                 )
                 return
-
         await ctx.send(f"You just bought {amount} {item}")
 
-    @commands.command(
+    @commands.command(aliases=['inv'],
     description="Inventory!", 
     usage="")  #🅱🅰🅶
     async def bag(self,ctx):
+        """Inventory!"""
         await open_account(ctx.author)
         user = ctx.author
         users = await get_bank_data()
-
         try:
             bag = users[str(user.id)]["bag"]
         except:
             bag = []
-
         em = discord.Embed(title="Bag")
         for item in bag:
             name = item["item"]
             amount = item["amount"]
-
             em.add_field(name=name, value=amount)
-
         await ctx.send(embed=em)
 
     @commands.command(
     description="Sells an item from your inventory!", 
     usage="[item_name]")  #🆂🅴🅻🅻
     async def sell(self, ctx, item, amount=1):
+        """Sells an item from your inventory!"""
         await open_account(ctx.author)
-
         res = await sell_this(ctx.author, item, amount)
-
         if not res[0]:
             if res[1] == 1:
                 await ctx.send("That Object isn't there!")
@@ -473,13 +417,13 @@ class Currency(commands.Cog):
             if res[1] == 3:
                 await ctx.send(f"You don't have {item} in your bag.")
                 return
-
         await ctx.send(f"You just sold {amount} {item}.")
 
     @commands.command(aliases=["lb"], 
     description="Leaderboard of Richest People in the Server!", 
     usage="[number_of people displayed]")  #leaderboard
     async def leaderboard(self,ctx, x=3):
+        """Leaderboard of Richest People in the Server!"""
         users = await get_bank_data()
         leader_board = {}
         total = []
@@ -488,9 +432,7 @@ class Currency(commands.Cog):
             total_amount = users[user]["wallet"] + users[user]["bank"]
             leader_board[total_amount] = name
             total.append(total_amount)
-
         total = sorted(total, reverse=True)
-
         em = discord.Embed(
             title=f"Top {x} Richest People",
             description=
@@ -506,10 +448,7 @@ class Currency(commands.Cog):
                 break
             else:
                 index += 1
-
         await ctx.send(embed=em)
-
-colors = [0xD41E1E, 0xD48B1, 0xF2F20A, 0x48F20A, 0x0AF2B0, 0x007EDA, 0x990AF2, 0xF20ACF]
 
 mainshop = [{
     "name": "Watch",

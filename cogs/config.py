@@ -9,6 +9,7 @@ from discord.ext import commands
 import cogs.utils.json_loader
 
 class Config(commands.Cog):
+    """c!help Config"""
     def __init__(self, bot):
         self.bot = bot
 
@@ -24,6 +25,7 @@ class Config(commands.Cog):
     )
     @commands.has_guild_permissions(manage_guild=True)
     async def prefix(self, ctx, *, prefix="cafebot."):
+        """Used to change the bot prefix."""
         await self.bot.config.upsert({"_id": ctx.guild.id, "prefix": prefix})
         await ctx.send(
             f"The guild prefix has been set to `{prefix}`. Use `{prefix}prefix [prefix]` to change it again!"
@@ -35,13 +37,9 @@ class Config(commands.Cog):
     @commands.guild_only()
     @commands.has_guild_permissions(administrator=True)
     async def deleteprefix(self, ctx):
+        """Deletes the current bot prefix."""
         await self.bot.config.unset({"_id": ctx.guild.id, "prefix": 1})
         await ctx.send("This guilds prefix has been set back to the default")
-
-    """
-    As a viewer, watch up to episode 10 and then attempt to convert the following
-    to using a database rather then continuing to use json
-    """
 
     @commands.command(
         name="blacklist", 
@@ -50,10 +48,10 @@ class Config(commands.Cog):
     )
     @commands.is_owner()
     async def blacklist(self, ctx, user: discord.Member):
+        """Blacklists a user from the bot."""
         if ctx.message.author.id == user.id:
             await ctx.send("Hey, you cannot blacklist yourself!")
             return
-
         self.bot.blacklisted_users.append(user.id)
         data = cogs.utils.json_loader.read_json("blacklist")
         data["blacklistedUsers"].append(user.id)
@@ -67,9 +65,7 @@ class Config(commands.Cog):
     )
     @commands.is_owner()
     async def unblacklist(self, ctx, user: discord.Member):
-        """
-        Unblacklist someone from the bot
-        """
+        """Unblacklist someone from the bot"""
         self.bot.blacklisted_users.remove(user.id)
         data = cogs.sutils.json_loader.read_json("blacklist")
         data["blacklistedUsers"].remove(user.id)
@@ -83,9 +79,7 @@ class Config(commands.Cog):
     )
     @commands.is_owner()
     async def logout(self, ctx):
-        """
-        If the user running the command owns the bot then this will disconnect the bot from discord.
-        """
+        """Bot Logs Out."""
         await ctx.send(f"Hey {ctx.author.mention}, I am now logging out :wave:")
         await self.bot.logout()
 
@@ -94,6 +88,7 @@ class Config(commands.Cog):
     )
     @commands.is_owner()
     async def reload(self, ctx, cog=None):
+        """Reloads Cogs."""
         if not cog:
             # No cog, means we reload all cogs
             async with ctx.typing():

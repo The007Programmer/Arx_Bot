@@ -7,7 +7,7 @@ import io
 import textwrap
 
 class Admin(commands.Cog):
-    """Admin commands"""
+    """c!help Admin"""
     def __init__(self, client):
         self.client = client
     

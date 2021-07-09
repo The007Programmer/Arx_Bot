@@ -3,6 +3,7 @@ from discord.ext import commands
 import json
 
 class Afk(commands.Cog):
+    """c!help Afk"""
     def __init__(self, bot):
        self.bot = bot
   
@@ -37,6 +38,7 @@ class Afk(commands.Cog):
     usage="[reason]")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def afk(self, ctx, *, message = "AFK"):
+        """Sets your AFK"""
         file = open("afk1.json", "r")
         afk = json.load(file)
         if not str(ctx.guild.id) in afk:

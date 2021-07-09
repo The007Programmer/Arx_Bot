@@ -28,7 +28,7 @@ class Levelling(commands.Cog):
     		return
     	elif msg.author.bot:
     		return
-    	elif msg.guild.id != 832285307965145118:
+    	elif msg.guild.id != 832285307965145118 or 681882711945641997:
     		return
     	else:
             cursor = await self.client.db.execute("INSERT OR IGNORE INTO guildData (guild_id, user_id, exp) VALUES (?,?,?)", (msg.guild.id, msg.author.id, 1))

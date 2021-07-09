@@ -31,6 +31,7 @@ class TimeConverter(commands.Converter):
 
 
 class Moderation(commands.Cog):
+    """c!help Moderation"""
     def __init__(self, bot):
         self.bot = bot
         self.mute_task = self.check_current_mutes.start()

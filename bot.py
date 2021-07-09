@@ -97,7 +97,7 @@ bot.blacklisted_users = []
 bot.muted_users = {}
 bot.cwd = cwd
 
-bot.version = "v1.3"
+bot.version = "v1.4"
 bot.colors = {
     "WHITE": 0xFFFFFF,
     "AQUA": 0x1ABC9C,
@@ -120,15 +120,13 @@ bot.colors = {
     "DARK_NAVY": 0x2C3E50,
 }
 bot.color_list = [c for c in bot.colors.values()]
-
-bot.load_extension("jishaku")
 class HelpEmbed(discord.Embed): # Our embed with some preset attributes to avoid setting it multiple times
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.timestamp = datetime.datetime.utcnow()
         text = "Use help [command] or help [category] for more information | <> is required | [] is optional"
         self.set_footer(text=text)
-        self.color = discord.Color.blurple()
+        self.color = discord.Color.random()
 
 
 class MyHelp(commands.HelpCommand):
@@ -320,7 +318,7 @@ async def ch_pr():
     await bot.wait_until_ready()
     h = [1,2,3]
     h = random.choice(h)
-    statuses=['ɢɪᴛʜᴜʙ','ᴘʏᴛʜᴏɴ 3.8│ c!help', f'in {len(bot.guilds)} servers!', 'Replit', 'Discord.py','you.','this server.','mods.','your mom.','a drug dealer.','karens','Dream','The Dream SMP','Dom (You probably Dont know him)', 'https://tinyurl.com/cafebotgoyee']
+    statuses=['ɢɪᴛʜᴜʙ','ᴘʏᴛʜᴏɴ 3.8│ c!help', f'in {len(bot.guilds)} servers!', 'Replit is Doodoo', 'Discord.py','you.','this server.','mods.','your mom.','a drug dealer.','karens','Dream','The Dream SMP','Dom (You probably Dont know him)', 'https://tinyurl.com/cafebotgoyee']
     status=random.choice(statuses)
     if h == 1:
         await bot.change_presence(activity=discord.Game(name=status))
