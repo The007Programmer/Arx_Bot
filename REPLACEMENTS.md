@@ -4,6 +4,8 @@ List of replacements:
         - Replace `mainbank1.json` with `mainbank.json`
     - afk.py
         - Replace `afk1.json` with `afk.json`
+    - bot.py
+        - Replace `secrets1.json` with `secrets.json`
     - levelling.py
         - Replace `832285307965145118` with your server id.
     
