@@ -18,7 +18,6 @@ import discord
 from discord.ext import commands, tasks
 import random
 import os
-from keep_alive import keep_alive
 from itertools import cycle
 import json
 import traceback
@@ -48,7 +47,6 @@ import textwrap
 from traceback import format_exception
 import dns
 import expression
-from discord_slash import SlashCommand
 import urllib.parse, urllib.request, re
 from aiohttp import ClientSession
 
@@ -74,6 +72,7 @@ async def get_prefix(bot, message):
 
 intents = discord.Intents.all()  # Help command requires member intents
 DEFAULTPREFIX = "c!"
+secret_file = cogs.utils.json_loader.read_json("secrets1")
 bot = commands.Bot(
     command_prefix=get_prefix,
     case_insensitive=True,
@@ -81,11 +80,9 @@ bot = commands.Bot(
     help_command=None,
     intents=intents,
 )
-
-bot.config_token = os.environ["Token"]
-bot.connection_url = os.environ["Mongo"]
-bot.api_key = os.environ['RS_API_Key']
-slash=SlashCommand(bot, sync_commands=True)
+bot.config_token = secret_file["token"]
+bot.connection_url = secret_file["mongo"]
+bot.rs_api_key = secret_file["prsaw_key"]
 logging.basicConfig(level=logging.INFO)
 
 bot.DEFAULTPREFIX = DEFAULTPREFIX
@@ -119,25 +116,37 @@ bot.color_list = [c for c in bot.colors.values()]
 
 bot.load_extension("jishaku")
 
-@slash.slash(description="Ping Command!")
-async def ping(ctx):
-    await ctx.send(f"{round(bot.latency * 1000)}ms")
+class MyHelp(commands.MinimalHelpCommand):
+    async def send_command_help(self, command):
+        embed = discord.Embed(title=self.get_command_signature(command))
+        embed.add_field(name="Help", value=command.help)
+        alias = command.aliases
+        if alias:
+            embed.add_field(name="Aliases", value=", ".join(alias), inline=False)
 
-@slash.slash(description="Death and all of it's entirety...")
-async def die(ctx):
-    await ctx.send("What did you expect, huh? Welp, you commited suicide. Ur dead lol.")
+        channel = self.get_destination()
+        await channel.send(embed=embed)
 
-@slash.slash(description="Mentions a given user.")
-async def mention(ctx, member:discord.Member):
-    await ctx.send(f"{member.mention}")
+bot.help_command = MyHelp()
+# @slash.slash(description="Ping Command!")
+# async def ping(ctx):
+#     await ctx.send(f"{round(bot.latency * 1000)}ms")
 
-@slash.slash(description="Slaps a given user.")
-async def slap(ctx, member:discord.Member):
-    await ctx.send(f"{member.mention} was slapped by {ctx.author}.")
+# @slash.slash(description="Death and all of it's entirety...")
+# async def die(ctx):
+#     await ctx.send("What did you expect, huh? Welp, you commited suicide. Ur dead lol.")
 
-@slash.slash(description="DMs a given user.")
-async def dm(ctx, member:discord.Member):
-    await ctx.author.send("started a dm")
+# @slash.slash(description="Mentions a given user.")
+# async def mention(ctx, member:discord.Member):
+#     await ctx.send(f"{member.mention}")
+
+# @slash.slash(description="Slaps a given user.")
+# async def slap(ctx, member:discord.Member):
+#     await ctx.send(f"{member.mention} was slapped by {ctx.author}.")
+
+# @slash.slash(description="DMs a given user.")
+# async def dm(ctx, member:discord.Member):
+#     await ctx.author.send("started a dm")
 
 async def get(session: object, url: object) -> object:
     async with session.get(url) as response:
@@ -185,8 +194,6 @@ if __name__ == "__main__":
     for file in os.listdir(cwd + "/cogs"):
         if file.endswith(".py") and not file.startswith("_"):
             bot.load_extension(f"cogs.{file[:-3]}")
-
-    keep_alive()
 
     bot.loop.create_task(initialize())
     bot.loop.create_task(general_databases())

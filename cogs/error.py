@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands, tasks
 import random
 import os
-from keep_alive import keep_alive
 from itertools import cycle
 import json
 import traceback

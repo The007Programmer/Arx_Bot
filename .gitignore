@@ -8,3 +8,5 @@ pyproject.toml
 mainbank1.json
 afk1.json
 .breakpoints
+.env
+secrets1.json

@@ -4,7 +4,6 @@ import requests
 from discord.ext import commands
 import random
 import os
-import keep_alive
 import asyncio
 import json
 import io

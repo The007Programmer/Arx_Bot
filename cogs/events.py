@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands, tasks
 import random
 import os
-from keep_alive import keep_alive
 from itertools import cycle
 import json
 import traceback
@@ -182,7 +181,7 @@ class Events(commands.Cog):
         # if the author is in the blacklisted_users list
         if msg.author.id in self.bot.blacklisted_users:
             return
-        rs = RandomStuff(async_mode = True, api_key = self.bot.api_key)
+        rs = RandomStuff(async_mode = True, api_key = self.bot.rs_api_key)
         # Whenever the bot is tagged, respond with its prefix
         if msg.content.startswith(f"<@!{self.bot.user.id}>") and len(msg.content) == len(
             f"<@!{self.bot.user.id}>"
