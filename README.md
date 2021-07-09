@@ -13,7 +13,7 @@ This is an all-around Discord Bot, with many features, such as:
 * Currency System¹
 * Error Handler³
 * Giveaway System³
-* Custom Paginated Help Command (Not the ugly orginal bot-rendered one.)³
+* Custom Help Command (Not the ugly orginal bot-rendered one.)⁴
 * A Welcoming and Leaving System³
 * Moderation Commands³
 * A Polling System³
@@ -80,6 +80,8 @@ After that, there will be some [small things] to replace in the code, to make su
 Code With Swastik¹ ⠀⍿ ⠀[Github](https://github.com/CodeWithSwastik) · [Youtube](https://www.youtube.com/c/CodeWithSwastik/featured)
 
 MenuDocs² ⠀⍿ ⠀[Github](https://github.com/MenuDocs) · [Youtube](https://www.youtube.com/channel/UCpGGFqJP9vYvzFudqnQ-6IA)
+
+@pikaninja⁴ ⠀⍿ ⠀[Github](https://github.com/pikaninja)
 
 ## Fellow Coders and Contributors³
 

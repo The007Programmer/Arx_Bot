@@ -7,14 +7,15 @@ import io
 import textwrap
 
 class Admin(commands.Cog):
+    """Admin commands"""
     def __init__(self, client):
         self.client = client
-
-
+    
     @commands.command(name="eval", aliases=["exec"], 
     description="Runs Code!", 
     usage="```[language] <code> ```")
     async def _eval(self, ctx, *, code):
+        """Evaluates some Code"""
         await ctx.reply("Let me evaluate this code for you! Won't be a sec")
         code = clean_code(code)
 

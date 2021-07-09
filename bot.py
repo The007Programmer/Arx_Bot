@@ -47,6 +47,8 @@ import textwrap
 from traceback import format_exception
 import dns
 import expression
+from dislash import slash_commands, SlashClient, SelectMenu, SelectOption, ActionRow, Button
+from dislash.interactions import *
 import urllib.parse, urllib.request, re
 from aiohttp import ClientSession
 
@@ -83,6 +85,8 @@ bot = commands.Bot(
 bot.config_token = secret_file["token"]
 bot.connection_url = secret_file["mongo"]
 bot.rs_api_key = secret_file["prsaw_key"]
+slash = slash_commands.SlashClient(bot)
+guilds = []
 logging.basicConfig(level=logging.INFO)
 
 bot.DEFAULTPREFIX = DEFAULTPREFIX
@@ -115,21 +119,114 @@ bot.colors = {
 bot.color_list = [c for c in bot.colors.values()]
 
 bot.load_extension("jishaku")
+class HelpEmbed(discord.Embed): # Our embed with some preset attributes to avoid setting it multiple times
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.timestamp = datetime.datetime.utcnow()
+        text = "Use help [command] or help [category] for more information | <> is required | [] is optional"
+        self.set_footer(text=text)
+        self.color = discord.Color.blurple()
 
-class MyHelp(commands.MinimalHelpCommand):
+
+class MyHelp(commands.HelpCommand):
+    def __init__(self):
+        super().__init__( # create our class with some aliases and cooldown
+            command_attrs={
+                "help": "The help command for the bot",
+                "cooldown": commands.Cooldown(1, 3.0, commands.BucketType.user),
+                "aliases": ['commands']
+            }
+        )
+    
+    async def send(self, **kwargs):
+        """a short cut to sending to get_destination"""
+        await self.get_destination().send(**kwargs)
+
+    async def send_bot_help(self, mapping):
+        """triggers when a `<prefix>help` is called"""
+        ctx = self.context
+        embed = HelpEmbed(title=f"{ctx.me.display_name} Help")
+        embed.set_thumbnail(url=ctx.me.avatar_url)
+        usable = 0 
+
+        for cog, commands in mapping.items(): #iterating through our mapping of cog: commands
+            if filtered_commands := await self.filter_commands(commands): 
+                # if no commands are usable in this category, we don't want to display it
+                amount_commands = len(filtered_commands)
+                usable += amount_commands
+                if cog: # getting attributes dependent on if a cog exists or not
+                    name = cog.qualified_name
+                    description = cog.description or "No description"
+                else:
+                    name = "No Category"
+                    description = "Commands with no category"
+
+                embed.add_field(name=f"{name} Category [{amount_commands}]", value=description)
+
+        embed.description = f"{len(bot.commands)} commands | {usable} usable" 
+
+        await self.send(embed=embed)
+
     async def send_command_help(self, command):
-        embed = discord.Embed(title=self.get_command_signature(command))
-        embed.add_field(name="Help", value=command.help)
-        alias = command.aliases
-        if alias:
-            embed.add_field(name="Aliases", value=", ".join(alias), inline=False)
+        """triggers when a `<prefix>help <command>` is called"""
+        signature = self.get_command_signature(command) # get_command_signature gets the signature of a command in <required> [optional]
+        embed = HelpEmbed(title=signature, description=command.help or "No help found...")
 
-        channel = self.get_destination()
-        await channel.send(embed=embed)
+        if cog := command.cog:
+            embed.add_field(name="Category", value=cog.qualified_name)
+
+        can_run = "No"
+        # command.can_run to test if the cog is usable
+        with contextlib.suppress(commands.CommandError):
+            if await command.can_run(self.context):
+                can_run = "Yes"
+            
+        embed.add_field(name="Usable", value=can_run)
+
+        if command._buckets and (cooldown := command._buckets._cooldown): # use of internals to get the cooldown of the command
+            embed.add_field(
+                name="Cooldown",
+                value=f"{cooldown.rate} per {cooldown.per:.0f} seconds",
+            )
+
+        await self.send(embed=embed)
+
+    async def send_help_embed(self, title, description, commands): # a helper function to add commands to an embed
+        embed = HelpEmbed(title=title, description=description or "No help found...")
+
+        if filtered_commands := await self.filter_commands(commands):
+            for command in filtered_commands:
+                embed.add_field(name=self.get_command_signature(command), value=command.help or "No help found...")
+           
+        await self.send(embed=embed)
+
+    async def send_group_help(self, group):
+        """triggers when a `<prefix>help <group>` is called"""
+        title = self.get_command_signature(group)
+        await self.send_help_embed(title, group.help, group.commands)
+
+    async def send_cog_help(self, cog):
+        """triggers when a `<prefix>help <cog>` is called"""
+        title = cog.qualified_name or "No"
+        await self.send_help_embed(f'{title} Category', cog.description, cog.get_commands())
+        
 
 bot.help_command = MyHelp()
-# @slash.slash(description="Ping Command!")
-# async def ping(ctx):
+
+@slash.command(
+    name="hello", # Defaults to function name
+    description="Says hello",
+    guild_ids=guilds # If not specified, the command is registered globally
+    # Global registration takes up to 1 hour
+)
+async def hello(inter):
+    await inter.reply("Hello!")
+
+# @slash.slash(name="Ping",
+#     description="Ping Command!",
+#     guild_ids=832285307965145118
+#     )
+# async def ping(ctx:SlashContext):
 #     await ctx.send(f"{round(bot.latency * 1000)}ms")
 
 # @slash.slash(description="Death and all of it's entirety...")
@@ -147,6 +244,57 @@ bot.help_command = MyHelp()
 # @slash.slash(description="DMs a given user.")
 # async def dm(ctx, member:discord.Member):
 #     await ctx.author.send("started a dm")
+
+@bot.command()
+async def test(ctx):
+    # Make a row of buttons
+    row_of_buttons = ActionRow(
+        Button(
+            style=ButtonStyle.green,
+            label="Green button",
+            custom_id="green"
+        ),
+        Button(
+            style=ButtonStyle.red,
+            label="Red button",
+            custom_id="red"
+        )
+    )
+    # Send a message with buttons
+    msg = await ctx.send(
+        "This message has buttons!",
+        components=[row_of_buttons]
+    )
+    # Wait for someone to click on them
+    def check(inter):
+        return inter.message.id == msg.id
+    inter = await ctx.wait_for_button_click(check)
+    # Send what you received
+    button_text = inter.clicked_button.label
+    await inter.reply(f"Button: {button_text}")
+
+@bot.command()
+async def test2(ctx):
+    msg = await ctx.send(
+        "This message has a select menu!",
+        components=[
+            SelectMenu(
+                custom_id="test",
+                placeholder="Choose up to 2 options",
+                max_values=2,
+                options=[
+                    SelectOption("Option 1", "value 1"),
+                    SelectOption("Option 2", "value 2"),
+                    SelectOption("Option 3", "value 3")
+                ]
+            )
+        ]
+    )
+    # Wait for someone to click on it
+    inter = await msg.wait_for_dropdown()
+    # Send what you received
+    labels = [option.label for option in inter.select_menu.selected_options]
+    await inter.reply(f"Options: {', '.join(labels)}")
 
 async def get(session: object, url: object) -> object:
     async with session.get(url) as response:

@@ -197,7 +197,6 @@ class Events(commands.Cog):
                 return
             response = await rs.get_ai_response(msg.content)
             await msg.reply(response)
-        await self.bot.process_commands(msg)
 
     @commands.Cog.listener()
     async def on_ready(self):
