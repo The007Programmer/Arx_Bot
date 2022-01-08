@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HomePage</title>
+	  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+	  crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/styles.css" />
+    <style>
+      button {
+        background-color: #255c83;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: px;
+        border-radius: 12px;
+      }
+      button:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+      }
+      #header {
+        color: #3783b9;
+        position: relative;
+        top: 0;
+        transition: top ease 0.4s;
+      }
+      #header:hover {
+        top: -10px;
+      }
+    </style>
+  </head>
+  <script src="main.js"></script>
+      <br>
+      <h1>
+        <span id="header">W</span><span id="header">e</span><span id="header">l</span><span id="header">c</span><span id="header">o</span><span id="header">m</span><span id="header">e</span> <span id="header">t</span><span id="header">o</span> <span id="header">T</span><span id="header">h</span><span id="header">e</span> <span id="header">A</span><span id="header">r</span><span id="header">x</span> <span id="header">B</span><span id="header">o</span><span id="header">t</span> <span id="header">H</span><span id="header">o</span><span id="header">m</span><span id="header">e</span><span id="header">P</span><span id="header">a</span><span id="header">g</span><span id="header">e</span><span id="header">!</span>
+      </h1>
+      <br>
+      <br>
+      <header>
+        <nav>
+          <p align="center">
+            {% if not authorized %}
+            <a href="/login"><button>Login with Discord</button></a>
+            {% else %}
+            <a href="/dashboard"><button>Open Dashboard</button></a>
+            {%endif %}
+          </p>
+        </nav>
+      </header>
+  <img src="ArxFinal.png" align="center">
+</html>
