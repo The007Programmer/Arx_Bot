@@ -273,7 +273,7 @@ class Misc(commands.Cog):
     async def invite(self,ctx):
         """Invite Link for this Bot!"""
         InviteEmbed = discord.Embed(title='Invite Link',url="https://discord.com/api/oauth2/authorize?client_id=832409595791409242&permissions=8&redirect_uri=http%3A%2F%2F0.0.0.0%3A8000%2Fcallback&scope=bot%20applications.commands",color=(random.choice(colors)))
-        InviteEmbed.add_field(name="What does it do?",value='Here is a link to invite Cafe Bot to your server!', inline = False)
+        InviteEmbed.add_field(name="What does it do?",value='Here is a link to invite Arx Bot to your server!', inline = False)
         InviteEmbed.set_footer(text='Remember to use the prefix before each command!')
         await ctx.send(embed=InviteEmbed)
 
