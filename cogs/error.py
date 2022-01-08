@@ -23,38 +23,70 @@ from cogs.utils.util import clean_code, Pag
 import logging
 import io
 import math
+import aiohttp
+import io
+import traceback
 
 class Error(commands.Cog):
     def __init__(self, bot):
         self.bot = bot   
 
+async def try_hastebin(self, content):
+    """Upload to Hastebin, if possible."""
+    payload = content.encode('utf-8')
+    async with aiohttp.ClientSession(raise_for_status=True) as cs:
+        async with cs.post('https://www.toptal.com/developers/hastebin/', data=payload) as res:
+            post = await res.json()
+    uri = post['key']
+    return f'https://hastebin.com/{uri}.bash'
 
-    @commands.Cog.listener() #Making an event for out error handler.
-    async def on_command_error(self, ctx, error): #This is what we use "in_command_error" for to check if there is any error while running the cmds.
-        if isinstance(error, commands.CommandOnCooldown):  #The first error which is if your command is on cooldown.
-            msg = 'Still on cooldown, please try again in {:.2f}s.'.format( #this is the error msg that will be shown when there is an error.
-                error.retry_after) 
-            em13 = discord.Embed(title="**Error Block**", #making an embed for our error.
-                                 color=discord.Color.red())
-            em13.add_field(name="__Slowmode Error:__", value=msg) 
-            await ctx.send(embed=em13)  #finally sending the "CommandOnCooldown error".
-        if isinstance(error, commands.MissingRequiredArgument): #this is the second error which is missing required arguments.
-            msg2 = "Please enter all the required arguments!" #if you have an ban command and you have not mentioned a user then this error will be thrown.
-            em14 = discord.Embed(title="Error Block", color=discord.Color.red()) #making an embed
-            em14.add_field(name="__Missing Required Arguments:__", value=msg2)
-            await ctx.send(embed=em14) #sending the embed
-        if isinstance(error, commands.MissingPermissions): #missing permissions like with the ban command if you dont have ban_members perm.
-            msg3 = "You are missing permissions to use that command!"
-            em15 = discord.Embed(title="**Error Block**",
-                                 color=discord.Color.red())
-            em15.add_field(name="__Missing Permissions:__", value=msg3)
-            await ctx.send(embed=em15)
-        if isinstance(error, commands.CommandNotFound): #this error is thrown when the thing you type with the bot's prefix is not a command.
-            msg4 = "No command found!"
-            em16 = discord.Embed(title="**Error Block**",
-                                 color=discord.Color.red())
-            em16.add_field(name="__Command Not Found:__", value=msg4)
-            await ctx.send(embed=em16)
+async def send_to_owner(self,content):
+    """Send content to owner. If content is small enough, send directly.
+    Otherwise, try Hastebin first, then upload as a File."""
+    owner = self.bot.get_user(self.bot.owner_id)
+    if owner is None:
+        return
+    if len(content) < 1990:
+        await owner.send(f'```python\n{content}\n```')
+    else:
+        try:
+            await owner.send(await try_hastebin(content))
+        except aiohttp.ClientResponseError:
+            await owner.send(file=discord.File(io.StringIO(content), filename='traceback.txt'))
+
+    @commands.Cog.listener()
+    async def on_error(event, *args, **kwargs):
+        """Error handler for all events."""
+        s = traceback.format_exc()
+        content = f'Ignoring exception in {event}\n{s}'
+        print(content, file=sys.stderr)
+        await send_to_owner(content)
+
+    async def handle_command_error(ctx: commands.Context, exc: Exception):
+        """Handle specific exceptions separately here"""
+        pass
+
+    filter_excs = (commands.CommandNotFound, commands.CheckFailure)
+    # These are exception types you want to handle explicitly.
+    handle_excs = (commands.UserInputError)
+
+    @commands.Cog.listener()
+    async def on_command_error(ctx: commands.Context, exc: Exception):
+        """Error handler for commands"""
+        if isinstance(exc, filter_excs):
+            # These exceptions are ignored completely.
+            return
+
+        if isinstance(exc, handle_excs):
+            # Explicitly handle these exceptions.
+            return await handle_command_error(ctx, exc)
+
+        # Log the error and bug the owner.
+        exc = getattr(exc, 'original', exc)
+        lines = ''.join(traceback.format_exception(exc.__class__, exc, exc.__traceback__))
+        lines = f'Ignoring exception in command {ctx.command}:\n{lines}'
+        print(lines)
+        await send_to_owner(lines)
 
 colors = [0xD41E1E, 0xD48B1, 0xF2F20A, 0x48F20A, 0x0AF2B0, 0x007EDA, 0x990AF2, 0xF20ACF]
 
