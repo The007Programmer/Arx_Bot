@@ -14,23 +14,23 @@ async def open_account(user):
         users[str(user.id)] = {}
         users[str(user.id)]['wallet'] = 0
         users[str(user.id)]['bank'] = 0
-        with open('Arx_Bot/mainbank1.json', 'w') as f:
+        with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
             json.dump(users, f)
         return True
 
 async def get_bank_data():
-    with open('Arx_Bot/mainbank1.json', 'r') as f:
+    with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'r') as f:
         users = json.load(f)
     return users
     
 async def get_bank_data():
-    with open('Arx_Bot/mainbank1.json', 'r') as f:
+    with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'r') as f:
         users = json.load(f)
     return users
 async def update_bank(user, change=0, mode='wallet'):
     users = await get_bank_data()
     users[str(user.id)][mode] += change
-    with open('Arx_Bot/mainbank1.json', 'w') as f:
+    with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
         json.dump(users, f)
     bal = [users[str(user.id)]['wallet'], users[str(user.id)]['bank']]
     return bal
@@ -72,7 +72,7 @@ async def sell_this(user, item_name, amount, price=None):
         except:
             return [False, 3]
 
-        with open("Arx_Bot/mainbank1.json", "w") as f:
+        with open("/home/aahil/Coding/Arx_Bot/mainbank1.json", "w") as f:
             json.dump(users, f)
 
         await update_bank(user, cost, "wallet")
@@ -119,7 +119,7 @@ async def buy_this(user, item_name, amount):
             obj = {"item": item_name, "amount": amount}
             users[str(user.id)]["bag"] = [obj]
 
-        with open("Arx_Bot/mainbank1.json", "w") as f:
+        with open("/home/aahil/Coding/Arx_Bot/mainbank1.json", "w") as f:
             json.dump(users, f)
 
         await update_bank(user, cost * -1, "wallet")
@@ -167,7 +167,7 @@ class Currency(commands.Cog):
         earnings = random.randrange(101)
         await ctx.send(f"{random.choice(beg_list)} {random.choice(gave_list)} you {earnings} coins!")
         users[str(user.id)]['wallet'] += earnings
-        with open('Arx_Bot/mainbank1.json', 'w') as f:
+        with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
             json.dump(users, f)
 
     # @commands.command() # Normal message wait_for
@@ -191,7 +191,7 @@ class Currency(commands.Cog):
         earnings = random.randrange(10001)
         await ctx.send(f"{random.choice(earn_list)} {random.choice(paid_list)} you {earnings} coins!")
         users[str(user.id)]['wallet'] += earnings
-        with open('Arx_Bot/mainbank1.json', 'w') as f:
+        with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
             json.dump(users, f)
 
     @commands.command(
@@ -212,7 +212,7 @@ class Currency(commands.Cog):
         if earnings > 120:
         	await ctx.send('Wow! What a whopper!')
         users[str(user.id)]['wallet'] += earnings
-        with open('Arx_Bot/mainbank1.json', 'w') as f:
+        with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
         	json.dump(users, f)
 
     @commands.command(
@@ -233,7 +233,7 @@ class Currency(commands.Cog):
         if earnings > 120:
         	await ctx.send('Great Hunt!')
         users[str(user.id)]['wallet'] += earnings
-        with open('Arx_Bot/mainbank1.json', 'w') as f:
+        with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
         	json.dump(users, f)
 
     @commands.command(aliases=['with'], 

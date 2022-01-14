@@ -51,7 +51,7 @@ class Error(commands.Cog):
             await ctx.send(embed=em15)
         if isinstance(error, commands.CommandNotFound): #this error is thrown when the thing you type with the bot's prefix is not a command.
             msg4 = "No command found!"
-            em16 = discord.Embed(title="**Error Block**",
+            em16 = discord.Embed(title="**:warning: Command Error :warning:**",
                                  color=discord.Color.red())
             em16.add_field(name="__Command Not Found:__", value=msg4)
             await ctx.send(embed=em16)

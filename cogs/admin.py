@@ -128,7 +128,7 @@ class Admin(commands.Cog):
     @commands.is_owner()
     async def logout(self, ctx):
         """Bot Logs Out."""
-        await ctx.send(f"Hey {ctx.author.mention}, I am now logging out :wave:")
+        stopbot1=discord.Embed(title=f"Hey {ctx.author.mention}, I am now logging out :wave:")
         await self.bot.logout()
 
     @commands.command(

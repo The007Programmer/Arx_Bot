@@ -40,7 +40,8 @@ class Config(commands.Cog):
     async def resetprefix(self, ctx):
         """Resets the current bot prefix."""
         await self.bot.config.unset({"_id": ctx.guild.id, "prefix": 1})
-        await ctx.send("This guilds prefix has been reset back to the default `a.`.")
+        rp=discord.Embed(title=f"This guilds prefix has been reset back to the default `a.`")
+        await ctx.send(embed=rp)
 
 def setup(bot):
     bot.add_cog(Config(bot))
