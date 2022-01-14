@@ -23,6 +23,7 @@ class Config(commands.Cog):
         description="Change your guilds prefix!",
         usage="[prefix]",
     )
+    @commands.is_owner()
     @commands.has_guild_permissions(manage_guild=True)
     async def prefix(self, ctx, *, prefix="a."):
         """Used to change the bot prefix."""
@@ -31,45 +32,15 @@ class Config(commands.Cog):
         await ctx.send(embed=prefix)
 
     @commands.command(
-        name="deleteprefix", aliases=["dp"], description="Delete your guilds prefix!"
+        name="resetprefix", aliases=["rp"], description="Reset your guilds prefix!"
     )
     @commands.guild_only()
+    @commands.is_owner()
     @commands.has_guild_permissions(administrator=True)
-    async def deleteprefix(self, ctx):
-        """Deletes the current bot prefix."""
+    async def resetprefix(self, ctx):
+        """Resets the current bot prefix."""
         await self.bot.config.unset({"_id": ctx.guild.id, "prefix": 1})
-        await ctx.send("This guilds prefix has been set back to the default")
-
-    @commands.command(
-        name="blacklist", 
-        description="Blacklist a user from the bot", 
-        usage="<user>"
-    )
-    @commands.is_owner()
-    async def blacklist(self, ctx, user: discord.Member):
-        """Blacklists a user from the bot."""
-        if ctx.message.author.id == user.id:
-            await ctx.send("Hey, you cannot blacklist yourself!")
-            return
-        self.bot.blacklisted_users.append(user.id)
-        data = cogs.utils.json_loader.read_json("blacklist")
-        data["blacklistedUsers"].append(user.id)
-        cogs.utils.json_loader.write_json(data, "blacklist")
-        await ctx.send(f"Hey, I have blacklisted {user.name} for you.")
-
-    @commands.command(
-        name="unblacklist",
-        description="Unblacklist a user from the bot",
-        usage="<user>",
-    )
-    @commands.is_owner()
-    async def unblacklist(self, ctx, user: discord.Member):
-        """Unblacklist someone from the bot"""
-        self.bot.blacklisted_users.remove(user.id)
-        data = cogs.sutils.json_loader.read_json("blacklist")
-        data["blacklistedUsers"].remove(user.id)
-        cogs.utils.json_loader.write_json(data, "blacklist")
-        await ctx.send(f"Hey, I have unblacklisted {user.name} for you.")
+        await ctx.send("This guilds prefix has been reset back to the default `a.`.")
 
 def setup(bot):
     bot.add_cog(Config(bot))
