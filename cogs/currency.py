@@ -170,15 +170,6 @@ class Currency(commands.Cog):
         with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
             json.dump(users, f)
 
-    # @commands.command() # Normal message wait_for
-    # async def test(self,ctx):
-    #     await ctx.send("Do you want me to say hi? `(y/n)`")
-    #     msg = await bot.wait_for('message', timeout=15.0)
-    #     if msg.content == 'y':
-    #         await ctx.send("hi")
-    #     else:
-    #         await ctx.send("ok i wont")
-
     @commands.command(
     description="Earning money for work!", 
     usage="")  #🅴🅰🆁🅽
