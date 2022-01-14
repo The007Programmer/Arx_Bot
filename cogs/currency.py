@@ -309,8 +309,9 @@ class Currency(commands.Cog):
     @commands.command(
     description="Robs from a given user.", 
     usage="<@username>")  #🆁🅾🅱
+    @commands.cooldown(1, 60, commands.BucketType.user)
     async def rob(self, ctx, member: discord.Member):  #ROB
-        """Sends money to another person. Perfect for giveaways!"""
+        """Robs a user. Be careful, they might rob you back!"""
         await open_account(ctx.author)
         await open_account(member)
         bal = await update_bank(member)
@@ -342,7 +343,7 @@ class Currency(commands.Cog):
             return
         final = []
         for i in range(3):
-            a = random.choice(['X', '0', 'Q'])
+            a = random.choice([':seven:', ':fish_cake:', ':drum:', ':virgo:', ':white_medium_small_square:', ':flag_um:'])
             final.append(a)
         await ctx.send(str(final))
         if final[0] == final[1] or final[0] == final[2] or final[2] == final[1]:
@@ -397,8 +398,8 @@ class Currency(commands.Cog):
             bag = []
         em = discord.Embed(title="Bag")
         for item in bag:
-            name = item["item"]
-            amount = item["amount"]
+            name = item["Item"]
+            amount = item["Amount"]
             em.add_field(name=name, value=amount)
         await ctx.send(embed=em)
 

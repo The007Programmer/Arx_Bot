@@ -311,8 +311,6 @@ class Misc(commands.Cog):
         embed.add_field(name="Channel ID", value=hash(channel), inline=False)
         await ctx.send(embed=embed)
 
-
-
 colors = [0xD41E1E, 0xD48B1, 0xF2F20A, 0x48F20A, 0x0AF2B0, 0x007EDA, 0x990AF2, 0xF20ACF]
 
 

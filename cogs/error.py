@@ -26,67 +26,62 @@ import math
 import aiohttp
 import io
 import traceback
+from discord import Embed, File, DMChannel
+from discord.errors import HTTPException, Forbidden
+from discord.ext.commands import Bot as BotBase
+from discord.ext.commands import Context
+from discord.ext.commands import (CommandNotFound, BadArgument, MissingRequiredArgument,
+								  CommandOnCooldown)
+from discord.ext.commands import when_mentioned_or, command, has_permissions
+
+IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
 
 class Error(commands.Cog):
     def __init__(self, bot):
-        self.bot = bot   
+        self.bot = bot  
 
-async def try_hastebin(self, content):
-    """Upload to Hastebin, if possible."""
-    payload = content.encode('utf-8')
-    async with aiohttp.ClientSession(raise_for_status=True) as cs:
-        async with cs.post('https://www.toptal.com/developers/hastebin/', data=payload) as res:
-            post = await res.json()
-    uri = post['key']
-    return f'https://hastebin.com/{uri}.bash'
+async def process_commands(self, message):
+		ctx = await self.get_context(message, cls=Context)
 
-async def send_to_owner(self,content):
-    """Send content to owner. If content is small enough, send directly.
-    Otherwise, try Hastebin first, then upload as a File."""
-    owner = self.bot.get_user(self.bot.owner_id)
-    if owner is None:
-        return
-    if len(content) < 1990:
-        await owner.send(f'```python\n{content}\n```')
-    else:
-        try:
-            await owner.send(await try_hastebin(content))
-        except aiohttp.ClientResponseError:
-            await owner.send(file=discord.File(io.StringIO(content), filename='traceback.txt'))
+		if ctx.command is not None and ctx.guild is not None:
+			if message.author.id in self.banlist:
+				await ctx.send("You are banned from using commands.")
 
-    @commands.Cog.listener()
-    async def on_error(event, *args, **kwargs):
-        """Error handler for all events."""
-        s = traceback.format_exc()
-        content = f'Ignoring exception in {event}\n{s}'
-        print(content, file=sys.stderr)
-        await send_to_owner(content)
+			elif not self.ready:
+				await ctx.send("I'm not ready to receive commands. Please wait a few seconds.")
 
-    async def handle_command_error(ctx: commands.Context, exc: Exception):
-        """Handle specific exceptions separately here"""
-        pass
+			else:
+				await self.invoke(ctx)
 
-    filter_excs = (commands.CommandNotFound, commands.CheckFailure)
-    # These are exception types you want to handle explicitly.
-    handle_excs = (commands.UserInputError)
+async def on_error(self, err, *args, **kwargs):
+		if err == "on_command_error":
+			await args[0].send("Something went wrong.")
 
-    @commands.Cog.listener()
-    async def on_command_error(ctx: commands.Context, exc: Exception):
-        """Error handler for commands"""
-        if isinstance(exc, filter_excs):
-            # These exceptions are ignored completely.
-            return
+		await self.stdout.send("An error occured.")
+		raise
 
-        if isinstance(exc, handle_excs):
-            # Explicitly handle these exceptions.
-            return await handle_command_error(ctx, exc)
+async def on_command_error(self, ctx, exc):
+		if any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
+			pass
 
-        # Log the error and bug the owner.
-        exc = getattr(exc, 'original', exc)
-        lines = ''.join(traceback.format_exception(exc.__class__, exc, exc.__traceback__))
-        lines = f'Ignoring exception in command {ctx.command}:\n{lines}'
-        print(lines)
-        await send_to_owner(lines)
+		elif isinstance(exc, MissingRequiredArgument):
+			await ctx.send("One or more required arguments are missing.")
+
+		elif isinstance(exc, CommandOnCooldown):
+			await ctx.send(f"That command is on {str(exc.cooldown.type).split('.')[-1]} cooldown. Try again in {exc.retry_after:,.2f} secs.")
+
+		elif hasattr(exc, "original"):
+			# if isinstance(exc.original, HTTPException):
+			# 	await ctx.send("Unable to send message.")
+
+			if isinstance(exc.original, Forbidden):
+				await ctx.send("I do not have permission to do that.")
+
+			else:
+				raise exc.original
+
+		else:
+			raise exc
 
 colors = [0xD41E1E, 0xD48B1, 0xF2F20A, 0x48F20A, 0x0AF2B0, 0x007EDA, 0x990AF2, 0xF20ACF]
 

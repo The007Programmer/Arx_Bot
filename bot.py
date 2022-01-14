@@ -122,60 +122,7 @@ bot.colors = {
     "DARK_RED": 0x992D22,
     "DARK_NAVY": 0x2C3E50,
 }
-bot.color_list = [c for c in bot.colors.values()]
-
-# @slash.slash(name="Ping", description="Ping Command!")
-# async def ping(ctx):
-#     await ctx.send(f"{round(bot.latency * 1000)}ms")
-# @slash.slash(name="Die",description="Death and all of it's entirety...")
-# async def die(ctx):
-#     await ctx.send("What did you expect, huh? Welp, you commited suicide. Ur dead lol.")
-# @slash.slash(name="Mention",description="Mentions a given user.")
-# async def mention(ctx, member:discord.Member):
-#     await ctx.send(f"{member.mention}")
-# @slash.slash(name="Slap",description="Slaps a given user.")
-# async def slap(ctx, member:discord.Member):
-#     await ctx.send(f"{member.mention} was slapped by {ctx.author.mention}.")    
-# @slash.slash(name="Punch",description="Punches a given user.")
-# async def punch(ctx, member:discord.Member):
-#     await ctx.send(f"{member.mention} was punched by {ctx.author.mention}.")
-# @slash.slash(name="Stan", description="Stans somebody, or makes someone stan someone else.")
-# async def stan(ctx, member:discord.Member, person):
-#     await ctx.send(f"{member.mention} stans {person}.")
-# @slash.slash(name="nuke",description="Nukes something.")
-# async def nuke(ctx, object):
-#     await ctx.send(f"{ctx.author.mention} nuked {object}.")
-# @slash.slash(name="Kick",description="Kicks a given user.")
-# async def kick(ctx, member:discord.Member):
-#     await ctx.send(f"{member.mention} was kicked by {ctx.author.mention}.")
-# @slash.slash(name="Roast",description="Roasts a given user.")
-# async def roast(ctx, member:discord.Member):
-#     roasts=["If I throw a stick, will you leave?",
-#     "You’re a gray sprinkle on a rainbow cupcake.",
-#     'If your brain was dynamite, there wouldn’t be enough to blow your hat off.',
-#     'You are more disappointing than an unsalted pretzel.',
-#     'Light travels faster than sound, which is why you seemed bright until you spoke.',
-#     'You have so many gaps in your teeth it looks like your tongue is in jail.',
-#     'I’ll never forget the first time we met. But I’ll keep trying.',
-#     'Hold still. I’m trying to imagine you with a personality.',
-#     'I’m not a nerd; I’m just smarter than you.',
-#     'Don’t be ashamed of who you are. That’s your parents’ job.',
-#     'Your face is just fine, but we’ll have to put a bag over that personality.',
-#     'I thought of you today. It reminded me to take out the trash.',
-#     'I’d rather treat my baby’s diaper rash than have lunch with you.',
-#     'I love what you’ve done with your hair. How do you get it to come out of your nostrils like that?',
-#     'You bring everyone so much joy! You know, when you leave the room. But, still.',
-#     'You have an entire life to be an idiot. Why not take today off?',
-#     'Some people are like slinkies — not really good for much, but they bring a smile to your face when pushed down the stairs.',
-#     'You’re the reason this country has to put directions on shampoo.',
-#     'I guess if you actually ever spoke your mind, you’d really be speechless.',
-#     'Life is full of disappointments, and I just added you to the list.',
-#     'I treasure the time I don’t spend with you.',
-#     'Your future kid is so annoying he makes his Happy Meal cry.',
-#     'Your face makes onions cry.',
-#     'I’m not insulting you; I’m describing you.']
-#     fr=[]
-#     await ctx.send(f"{random.choice(roasts)} is what {ctx.author.mention} said to {member.mention}! Roasteddd!")      
+bot.color_list = [c for c in bot.colors.values()]      
 
 async def get(session: object, url: object) -> object:
     async with session.get(url) as response:
@@ -198,7 +145,7 @@ async def ch_pr():
     await bot.wait_until_ready()
     h = [1,2,3]
     h = random.choice(h)
-    statuses=['Gamefan586','ɢɪᴛʜᴜʙ','ᴘʏᴛʜᴏɴ 3.8│a.help', f'in {len(bot.guilds)} servers!', 'Replit is Doodoo', 'Discord.py','you.','this server.','mods.','your mom.','a drug dealer.','karens','Dream','The Dream SMP','Dom (You probably Dont know him)', 'https://tinyurl.com/cafebotgoyee']
+    statuses=['Gamefan586','ɢɪᴛʜᴜʙ','ᴘʏᴛʜᴏɴ 3.8│a.help', f'in {len(bot.guilds)} servers!', 'Replit is Doodoo', 'Pycord','you.','this server.','mods.','your mom.','a drug dealer.','karens','Dream','The Dream SMP','Dom (You probably Dont know him)', 'https://tinyurl.com/cafebotgoyee']
     status=random.choice(statuses)
     if h == 1:
         await bot.change_presence(activity=discord.Game(name=status))
