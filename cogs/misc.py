@@ -92,24 +92,6 @@ class Misc(commands.Cog):
             ternary = "enabled" if command.enabled else "disabled"
             await ctx.send(f"I have {ternary} {command.qualified_name} for you!")
 
-    # @commands.command(aliases=['pl'],
-    # description="Makes a poll in the current channel!", 
-    # usage="[option1] or [option2]")
-    # async def poll(self, ctx,*,msg):
-    #     """Creates a Poll."""
-    #     channel = ctx.channel
-    #     try:
-    # 	    op1 , op2 = msg.split("or")
-    #         txt = f"React with :one: for {op1} or :two: for {op2}."
-    #     except: 
-    # 	    await channel.send("Umm, can you please phrase it like this? [Choice1] or [Choice 2]")
-    # 	    return
-    #     PollEmbed=discord.Embed(title="Poll", description=txt, color=discord.Color.random())
-    #     message_ = await channel.send(embed=PollEmbed)
-    #     await message_.add_reaction("1️⃣")
-    #     await message_.add_reaction("2️⃣")
-
-
     @commands.command(aliases=['sug'],
     description="Command used for suggesting improvements to the server!", 
     usage="[suggestion]")
@@ -241,7 +223,7 @@ class Misc(commands.Cog):
     async def source(self,ctx):
         """Source Code for this Bot!"""
         embed = discord.Embed()
-        embed.add_field(name='Source Code for Cafe Bot:', value='[Cafe Bot Github Page](https://github.com/MilkshakeTheCoder/Cafe_Bot)')
+        embed.add_field(name='Source Code for Arx Bot:', value='[Arx Bot Github Page](https://github.com/MilkshakeTheCoder/Cafe_Bot)')
         await ctx.send(embed=embed)
 
     @commands.command(

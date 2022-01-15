@@ -51,13 +51,10 @@ import dns
 import expression
 import urllib.parse, urllib.request, re
 from aiohttp import ClientSession
-from pretty_help import PrettyHelp,DefaultMenu
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
 print(f"{cwd}\n-----")
-
-
 
 async def get_prefix(bot, message):
     # If dm's
@@ -83,12 +80,6 @@ class MyBot(commands.Bot):
 		"""Called upon the READY event"""
 		print("Bot is ready.")
 
-# ":discord:743511195197374563" is a custom discord emoji format. Adjust to match your own custom emoji.
-menu = DefaultMenu(page_left="\U0001F44D", page_right="👎", remove=":discord:743511195197374563", active_time=5)
-
-# Custom ending note
-ending_note = "The ending note from {ctx.bot.user.name}\nFor command {help.clean_prefix}{help.invoked_with}"
-
 intents = discord.Intents.all()  # Help command requires member intents
 DEFAULTPREFIX = "a."
 secret_file = cogs.utils.json_loader.read_json("secrets1")
@@ -96,7 +87,7 @@ bot = MyBot(
     command_prefix=get_prefix,
     case_insensitive=True,
     owner_id=759919832539332639,
-    help_command=PrettyHelp(menu=menu, ending_note=ending_note),
+    help_command=None,
     intents=intents,
 )
 bot.config_token = secret_file["token"]

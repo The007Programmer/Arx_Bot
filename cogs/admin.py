@@ -59,7 +59,8 @@ class Admin(commands.Cog):
         nchan=discord.Embed(title="Channel Created!", description=f"Name: {channel.name}")
         await ctx.send(embed=nchan)
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True,
+    aliases=["del"],)
     @our_custom_check()
     async def delete(self, ctx):
         """Deletes a category or channel ---> a.delete [channel|category] <role> [name]"""
