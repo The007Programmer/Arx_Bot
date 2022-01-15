@@ -232,7 +232,7 @@ class Moderation(commands.Cog):
         usage='<user>'
     )
     @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
+    @commands.has_permissions(kick_members=True)
     async def warn(self, ctx, member: discord.Member, *, reason):
         """Warns a given user."""
         if member.id in [ctx.author.id, self.bot.user.id]:

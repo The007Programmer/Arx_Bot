@@ -44,15 +44,13 @@ class Error(commands.Cog):
             em14.add_field(name="__Missing Required Arguments:__", value=msg2)
             await ctx.send(embed=em14) #sending the embed
         if isinstance(error, commands.MissingPermissions): #missing permissions like with the ban command if you dont have ban_members perm.
-            msg3 = "You are missing permissions to use that command!"
-            em15 = discord.Embed(title="**Error Block**",
-                                 color=discord.Color.red())
-            em15.add_field(name="__Missing Permissions:__", value=msg3)
+            msg3 = "It looks like you don't quite have the permissions to use this command. "
+            em15 = discord.Embed(title="**:warning: Missing Permissions :warning:**", color=discord.Color.red(), inline=False)
+            em15.add_field(name="__Invalid Permissions:__", value=msg3)
             await ctx.send(embed=em15)
         if isinstance(error, commands.CommandNotFound): #this error is thrown when the thing you type with the bot's prefix is not a command.
-            msg4 = "No command found!"
-            em16 = discord.Embed(title="**:warning: Command Error :warning:**",
-                                 color=discord.Color.red())
+            msg4 = "I dont think that that command exists! Check for typos!"
+            em16 = discord.Embed(title="**:warning: Command Error :warning:**", color=discord.Color.red())
             em16.add_field(name="__Command Not Found:__", value=msg4)
             await ctx.send(embed=em16)
 

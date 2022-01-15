@@ -1,3 +1,4 @@
+from email import message
 import discord
 #discord lib (async lib)
 # Note to self: when writing bot, make sure version of python is on 3.8.5+ bottom left of screen (vscode)
@@ -155,7 +156,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self,guild:discord.Guild):
         welcome_channel = discord.utils.get(guild.channels, name="welcome")
-        if welcome_channel in guild.channel.name:
+        if welcome_channel in guild.channels:
             await welcome_channel.send('Hey there! Thanks for adding me {0.user}'.format(self.client) +' into your server!')
             ServerJoinEmbed = discord.Embed(title='Stuff to do:',color=discord.Color.random())
             ServerJoinEmbed.add_field(name="Help", value="Go ahead and write ` a.help` into your chat, and find out the many    commands we have as part of this bot! If you don't know what a certain command does, then try  `a.help_<command_name>` to find out more information about a command.", inline =False)
@@ -179,21 +180,25 @@ class Events(commands.Cog):
         if msg.author.id in self.bot.blacklisted_users:
             return
         rs = RandomStuffV4(async_mode = True, api_key = self.bot.rs_api_key)
-        if msg.content.startswith(f"<@!{self.bot.user.id}>") and len(msg.content) == len(
-            f"<@!{self.bot.user.id}>"
-        ):
+        # Whenever the bot is tagged, respond with its prefix
+        if msg.content.startswith(f"<@!{self.bot.user.id}>") and len(msg.content) == len(f"<@!{self.bot.user.id}>"):
             data = await self.bot.config.find_by_id(msg.guild.id)
             if not data or "prefix" not in data:
                 prefix = self.bot.DEFAULTPREFIX
             else:
                 prefix = data["prefix"]
             await msg.channel.send(f"My prefix here is `{prefix}`", delete_after=15)
-        if 'ai-chat' in msg.channel.name:
-            if self.bot.user == msg.author:
-                return
-            response = await rs.get_ai_response("hi")
-            await msg.reply(response["message"])
-            print(response)
+        # # if 'ai-chat' in msg.channel.name:
+        # #     if self.bot.user == msg.author:
+        # #         return
+        # #     response = await rs.get_ai_response(msg.content)
+        # #     await msg.reply(response)
+        # #     print(response)
+        # if 'ai-chat' in msg.channel.name:
+        #     if self.bot.user == msg.author:
+        #         return
+        #     response = await rs.get_ai_response(msg.content)
+        #     await msg.reply(response)
 
     @commands.Cog.listener()
     async def on_ready(self):
