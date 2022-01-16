@@ -165,12 +165,12 @@ class Currency(commands.Cog):
         users = await get_bank_data()
         user = ctx.author
         earnings = random.randrange(101)
-        begembed=discord.Embed(title="You begged for some money:", color=discord.Color.random())
-        begembed.add_field(name=f"{random.choice(beg_list)} {random.choice(gave_list)} you {earnings} coins!")
-        await ctx.send(embed=begembed)
         users[str(user.id)]['wallet'] += earnings
         with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
             json.dump(users, f)
+        begembed=discord.Embed(title="You begged for some money:", color=discord.Color.random())
+        begembed.add_field(name=f"{random.choice(beg_list)} {random.choice(gave_list)} you {earnings} coins!")
+        await ctx.send(embed=begembed)
 
     @commands.command(
     description="Earning money for work!", 
@@ -302,7 +302,7 @@ class Currency(commands.Cog):
     @commands.command(
     description="Robs from a given user.", 
     usage="<@username>")  #🆁🅾🅱
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(1, 300, commands.BucketType.user)
     async def rob(self, ctx, member: discord.Member):  #ROB
         """Robs a user. Be careful, they might rob you back!"""
         await open_account(ctx.author)
@@ -310,7 +310,7 @@ class Currency(commands.Cog):
         bal = await update_bank(member)
         if bal[0] < 100:
             await ctx.send(
-                "You're wasting your time with this noob! He's got less than a 100. Go rob someone else.")
+                "You're wasting your time with this noob! They've got less than a 100. Go rob someone else.")
             return
         earnings = random.randrange(0, bal[0])
         await update_bank(ctx.author, earnings, 'bank')
