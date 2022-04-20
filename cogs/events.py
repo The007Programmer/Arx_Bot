@@ -143,11 +143,11 @@ class Events(commands.Cog):
             if c.guild.id == member.guild.id:
                 MemberLeaveEmbed = discord.Embed(title=f"Bye {member.name}...",description="Goodbye from all of us..", color=random.choice(self.bot.color_list))
 
-                MemberLeaveEmbed.set_thumbnail(url=member.avatar.url)
+                MemberLeaveEmbed.set_thumbnail(url=member.display_avatar)
 
-                MemberLeaveEmbed.set_author(name=member.name, icon_url=member.avatar.url)
+                MemberLeaveEmbed.set_author(name=member.name, icon_url=member.display_avatar)
 
-                MemberLeaveEmbed.set_footer(text=member.guild, icon_url=member.guild.icon.url)
+                MemberLeaveEmbed.set_footer(text=member.guild, icon_url=member.guild_display_avatar)
 
                 MemberLeaveEmbed.timestamp = datetime.datetime.now()
 

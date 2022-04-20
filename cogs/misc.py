@@ -108,6 +108,7 @@ class Misc(commands.Cog):
             message = await channel.send(embed=SuggestEmbed)
             await message.add_reaction("🔼")
             await message.add_reaction("🔽")
+    
 
     @commands.command(aliases=['ssc'],
     description="Sets the channel in which Suggestions will be posted!", 
@@ -248,6 +249,8 @@ class Misc(commands.Cog):
         Em2.add_field(name="Question:", value=question, inline=False)
         Em2.add_field(name='Answer:', value=random.choice(responses))
         await ctx.send(embed=Em2)
+
+
 
     @commands.command(
     description="Invite this Bot to Your server!!", 

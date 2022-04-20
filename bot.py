@@ -51,6 +51,7 @@ import dns
 import expression
 import urllib.parse, urllib.request, re
 from aiohttp import ClientSession
+import aiohttp
 
 cwd = Path(__file__).parents[0]
 cwd = str(cwd)
@@ -139,6 +140,16 @@ async def general_databases():
     await bot.db1.execute("CREATE TABLE IF NOT EXISTS suggestionchannel(guild_id int, suggestion_channel_id int, PRIMARY KEY (guild_id))")
     await bot.db1.execute("CREATE TABLE IF NOT EXISTS welcomechannel(guild_id int, welcome_channel_id int, PRIMARY KEY (guild_id))")
     await bot.db1.execute("CREATE TABLE IF NOT EXISTS leavechannel(guild_id int, leave_channel_id int, PRIMARY KEY (guild_id))")
+    await bot.db1.execute("CREATE TABLE IF NOT EXISTS leveltoggle(guild_id int, toggle text, PRIMARY KEY (guild_id))")
+
+@bot.command(pass_context=True)
+async def meme(ctx):
+    embed = discord.Embed(title="", description="")
+    async with aiohttp.ClientSession() as cs:
+        async with cs.get('https://www.reddit.com/r/memes/new.json?sort=hot') as r:
+            res = await r.json()
+            embed.set_image(url=res['data']['children'][random.randint(0, 25)]['data']['url'])
+            await ctx.send(embed=embed)
 
 @tasks.loop(seconds=10)
 async def ch_pr():
@@ -177,4 +188,3 @@ if __name__ == "__main__":
     print(os.listdir())
     bot.run(bot.config_token)
     asyncio.run(bot.db.close())
-    asyncio.run(bot.db1.close())

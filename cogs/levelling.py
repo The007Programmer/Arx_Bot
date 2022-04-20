@@ -45,7 +45,7 @@ class Levelling(commands.Cog):
                     for i in range(len(level)):
                         if lvl == levelnum[i]:
                             rl = discord.utils.get(msg.author.guild.roles, name=level[i])
-                            await msg.author.add_roles(rl)
+                            # await msg.author.add_roles(rl)
                             embed = discord.Embed(title=f"Congratulations {msg.author.name} You levelled up", description=f"{msg.author.name} Well done, You're now level {int(lvl)}\n{msg.author.mention} You have gotten this role **{rl.mention}**", color=msg.author.color)
                             embed.set_thumbnail(url=msg.author.avatar_url)
                             await msg.channel.send(embed=embed)
