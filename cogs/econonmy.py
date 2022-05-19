@@ -182,7 +182,9 @@ class Currency(commands.Cog):
         users = await get_bank_data()
         user = ctx.author
         earnings = random.randrange(10001)
-        await ctx.send(f"{random.choice(earn_list)} {random.choice(paid_list)} you {earnings} coins!")
+        earnembed=discord.Embed(title="You begged for some money:", color=discord.Color.random())
+        earnembed.add_field(name=f"{random.choice(earn_list)} {random.choice(paid_list)} you {earnings} coins!")
+        await ctx.send(embed=earnembed)
         users[str(user.id)]['wallet'] += earnings
         with open('/home/aahil/Coding/Arx_Bot/mainbank1.json', 'w') as f:
             json.dump(users, f)
